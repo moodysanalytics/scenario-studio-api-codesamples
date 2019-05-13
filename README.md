@@ -3,7 +3,7 @@
 ## Introduction
 Scenario Studio is a web application for time-series models. The programs in this section will allow automatic access to facilitate integration of workflow with Scenario Studio. The Scenario Studio API supports both oAuth and HMAC authentication, and returns JSON responses, and doesn't depend on OS or programming language. The code samples are written in ```R``` and ```Python``` and serve as a starting point to retrieve project content.
 
-See scenario-studio-api-userguide for more information on using the API.
+See [Scenario Studio API User Guide](https://github.com/moodysanalytics/scenario-studio.api.codesamples/blob/master/scenario-studio-api-userguide.pdf) for more information on using the API.
 
 ## Prerequisites
 
