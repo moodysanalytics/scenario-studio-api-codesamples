@@ -260,7 +260,7 @@ Please see if the glossary in this document helps. It lists terminology pertaini
 
 ### Appendix 1: API endpoints
 
-All API endpoints below are relative to the root URL https://api.economy.com/data/v1/.
+All API endpoints below are relative to the root URL https://api.economy.com/scenario-studio/v1/.
 
 | HTTP             | Endpoint                                                                                         | Description                                                                               |
 | ---------------- | ------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------- |
