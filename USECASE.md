@@ -1,9 +1,11 @@
 # Scenario Studio v2 API Use Cases
 
 ## Introduction
-Contained here are a collection of use cases, and how tos based on the Postman files found in the `./postman` directory. Postman can be downloaded for free [from here](https://www.postman.com/).
+Contained here are a collection of use cases, and how tos based on the Postman files found in the `./Postman` directory. Postman can be downloaded for free [from here](https://www.postman.com/).
 
-A set of environment variables have been set up, but will need to be configured before making requests. To start, fill in `accessKeyId` and `privateKeyId` within the environment variables. Access key and private key values can be found under your [account settings on Economy.com](https://www.economy.com/myeconomy/api-key-info)
+Within the `./Postman` directory, you can find the file `S2.API-Examples.postman_collection.json`. This file contains a number of API endpoints, which can be imported into Postman as a collection.
+
+`S2-api-examples.postman_environment.json` contains set of environment variables have been set up, but will need to be configured before making requests. To start, import this file as a new environment, and fill in `accessKeyId` and `privateKeyId` within the environment variables. Access key and private key values can be found under your [account settings on Economy.com](https://www.economy.com/myeconomy/api-key-info).
 
 Authorization has also been configured for these requests. You will occassionally need to refresh your the bearer token by clicking Get New Access Token within the Authorization section of a Postman tab.
 
