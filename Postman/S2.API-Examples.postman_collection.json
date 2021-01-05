@@ -6,81 +6,1588 @@
 	},
 	"item": [
 		{
-			"name": "Project",
-			"request": {
-				"auth": {
-					"type": "oauth2",
-					"oauth2": [
-						{
-							"key": "clientSecret",
-							"value": "{{privateKeyId}}",
-							"type": "string"
+			"name": "Audit",
+			"item": [
+				{
+					"name": "audit-search",
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "clientSecret",
+									"value": "{{privateKeyId}}",
+									"type": "string"
+								},
+								{
+									"key": "clientId",
+									"value": "{{accessKeyId}}",
+									"type": "string"
+								},
+								{
+									"key": "tokenName",
+									"value": "bearer",
+									"type": "string"
+								},
+								{
+									"key": "headerPrefix",
+									"value": "Bearer",
+									"type": "string"
+								},
+								{
+									"key": "grant_type",
+									"value": "client_credentials",
+									"type": "string"
+								},
+								{
+									"key": "redirect_uri",
+									"value": "https://api.economy.com/scenario-studio/v2/oauth2/callback",
+									"type": "string"
+								},
+								{
+									"key": "authUrl",
+									"value": "https://api.economy.com/scenario-studio/v2/oauth2/authorize",
+									"type": "string"
+								},
+								{
+									"key": "client_authentication",
+									"value": "header",
+									"type": "string"
+								},
+								{
+									"key": "accessTokenUrl",
+									"value": "https://api.economy.com/scenario-studio/v2/oauth2/token",
+									"type": "string"
+								},
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								}
+							]
 						},
-						{
-							"key": "clientId",
-							"value": "{{accessKeyId}}",
-							"type": "string"
-						},
-						{
-							"key": "tokenName",
-							"value": "bearer",
-							"type": "string"
-						},
-						{
-							"key": "headerPrefix",
-							"value": "Bearer",
-							"type": "string"
-						},
-						{
-							"key": "grant_type",
-							"value": "client_credentials",
-							"type": "string"
-						},
-						{
-							"key": "redirect_uri",
-							"value": "https://api.economy.com/scenario-studio/v2/oauth2/callback",
-							"type": "string"
-						},
-						{
-							"key": "authUrl",
-							"value": "https://api.economy.com/scenario-studio/v2/oauth2/authorize",
-							"type": "string"
-						},
-						{
-							"key": "client_authentication",
-							"value": "header",
-							"type": "string"
-						},
-						{
-							"key": "accessTokenUrl",
-							"value": "https://api.economy.com/scenario-studio/v2/oauth2/token",
-							"type": "string"
-						},
-						{
-							"key": "addTokenTo",
-							"value": "header",
-							"type": "string"
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.economy.com/scenario-studio/v2/audit/project/{{projectId}}?take=25&skip=0",
+							"protocol": "https",
+							"host": [
+								"api",
+								"economy",
+								"com"
+							],
+							"path": [
+								"scenario-studio",
+								"v2",
+								"audit",
+								"project",
+								"{{projectId}}"
+							],
+							"query": [
+								{
+									"key": "take",
+									"value": "25"
+								},
+								{
+									"key": "skip",
+									"value": "0"
+								}
+							]
 						}
-					]
+					},
+					"response": []
 				},
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "https://api.economy.com/scenario-studio/v2/project",
-					"protocol": "https",
-					"host": [
-						"api",
-						"economy",
-						"com"
-					],
-					"path": [
-						"scenario-studio",
-						"v2",
-						"project"
-					]
+				{
+					"name": "audit-search-count",
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "clientSecret",
+									"value": "{{privateKeyId}}",
+									"type": "string"
+								},
+								{
+									"key": "clientId",
+									"value": "{{accessKeyId}}",
+									"type": "string"
+								},
+								{
+									"key": "tokenName",
+									"value": "bearer",
+									"type": "string"
+								},
+								{
+									"key": "headerPrefix",
+									"value": "Bearer",
+									"type": "string"
+								},
+								{
+									"key": "grant_type",
+									"value": "client_credentials",
+									"type": "string"
+								},
+								{
+									"key": "redirect_uri",
+									"value": "https://api.economy.com/scenario-studio/v2/oauth2/callback",
+									"type": "string"
+								},
+								{
+									"key": "authUrl",
+									"value": "https://api.economy.com/scenario-studio/v2/oauth2/authorize",
+									"type": "string"
+								},
+								{
+									"key": "client_authentication",
+									"value": "header",
+									"type": "string"
+								},
+								{
+									"key": "accessTokenUrl",
+									"value": "https://api.economy.com/scenario-studio/v2/oauth2/token",
+									"type": "string"
+								},
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.economy.com/scenario-studio/v2/audit/project/{{projectId}}/count",
+							"protocol": "https",
+							"host": [
+								"api",
+								"economy",
+								"com"
+							],
+							"path": [
+								"scenario-studio",
+								"v2",
+								"audit",
+								"project",
+								"{{projectId}}",
+								"count"
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
+		},
+		{
+			"name": "DataSeries",
+			"item": [
+				{
+					"name": "data-series",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "clientSecret",
+									"value": "{{privateKeyId}}",
+									"type": "string"
+								},
+								{
+									"key": "clientId",
+									"value": "{{accessKeyId}}",
+									"type": "string"
+								},
+								{
+									"key": "tokenName",
+									"value": "bearer",
+									"type": "string"
+								},
+								{
+									"key": "headerPrefix",
+									"value": "Bearer",
+									"type": "string"
+								},
+								{
+									"key": "grant_type",
+									"value": "client_credentials",
+									"type": "string"
+								},
+								{
+									"key": "redirect_uri",
+									"value": "https://api.economy.com/scenario-studio/v2/oauth2/callback",
+									"type": "string"
+								},
+								{
+									"key": "authUrl",
+									"value": "https://api.economy.com/scenario-studio/v2/oauth2/authorize",
+									"type": "string"
+								},
+								{
+									"key": "client_authentication",
+									"value": "header",
+									"type": "string"
+								},
+								{
+									"key": "accessTokenUrl",
+									"value": "https://api.economy.com/scenario-studio/v2/oauth2/token",
+									"type": "string"
+								},
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\"C.BL.FLBR_US\"]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://api.economy.com/scenario-studio/v2/project/{{projectId}}/data-series?expressions=c.bl.flbr_us%3Bc.bl.flbr_us%2Fc.bl.fet_us&frequency=172&transformation=1",
+							"protocol": "https",
+							"host": [
+								"api",
+								"economy",
+								"com"
+							],
+							"path": [
+								"scenario-studio",
+								"v2",
+								"project",
+								"{{projectId}}",
+								"data-series"
+							],
+							"query": [
+								{
+									"key": "expressions",
+									"value": "c.bl.flbr_us%3Bc.bl.flbr_us%2Fc.bl.fet_us"
+								},
+								{
+									"key": "frequency",
+									"value": "172"
+								},
+								{
+									"key": "transformation",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "data-series",
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "clientSecret",
+									"value": "{{privateKeyId}}",
+									"type": "string"
+								},
+								{
+									"key": "clientId",
+									"value": "{{accessKeyId}}",
+									"type": "string"
+								},
+								{
+									"key": "tokenName",
+									"value": "bearer",
+									"type": "string"
+								},
+								{
+									"key": "headerPrefix",
+									"value": "Bearer",
+									"type": "string"
+								},
+								{
+									"key": "grant_type",
+									"value": "client_credentials",
+									"type": "string"
+								},
+								{
+									"key": "redirect_uri",
+									"value": "https://api.economy.com/scenario-studio/v2/oauth2/callback",
+									"type": "string"
+								},
+								{
+									"key": "authUrl",
+									"value": "https://api.economy.com/scenario-studio/v2/oauth2/authorize",
+									"type": "string"
+								},
+								{
+									"key": "client_authentication",
+									"value": "header",
+									"type": "string"
+								},
+								{
+									"key": "accessTokenUrl",
+									"value": "https://api.economy.com/scenario-studio/v2/oauth2/token",
+									"type": "string"
+								},
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\"C.BL.FLBR_US\"]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://api.economy.com/scenario-studio/v2/project/{{projectId}}/data-series?frequency=172",
+							"protocol": "https",
+							"host": [
+								"api",
+								"economy",
+								"com"
+							],
+							"path": [
+								"scenario-studio",
+								"v2",
+								"project",
+								"{{projectId}}",
+								"data-series"
+							],
+							"query": [
+								{
+									"key": "frequency",
+									"value": "172"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "data-series-save",
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "clientSecret",
+									"value": "{{privateKeyId}}",
+									"type": "string"
+								},
+								{
+									"key": "clientId",
+									"value": "{{accessKeyId}}",
+									"type": "string"
+								},
+								{
+									"key": "tokenName",
+									"value": "bearer",
+									"type": "string"
+								},
+								{
+									"key": "headerPrefix",
+									"value": "Bearer",
+									"type": "string"
+								},
+								{
+									"key": "grant_type",
+									"value": "client_credentials",
+									"type": "string"
+								},
+								{
+									"key": "redirect_uri",
+									"value": "https://api.economy.com/scenario-studio/v2/oauth2/callback",
+									"type": "string"
+								},
+								{
+									"key": "authUrl",
+									"value": "https://api.economy.com/scenario-studio/v2/oauth2/authorize",
+									"type": "string"
+								},
+								{
+									"key": "client_authentication",
+									"value": "header",
+									"type": "string"
+								},
+								{
+									"key": "accessTokenUrl",
+									"value": "https://api.economy.com/scenario-studio/v2/oauth2/token",
+									"type": "string"
+								},
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"projectId\": \"{{projectId}}\",\r\n  \"scenarioId\": \"{{scenarioId}}\",\r\n  \"variable\": \"FSPVOL_I_US\",\r\n  \"startDate\": 682,\r\n  \"endDate\": 804,\r\n  \"data\": [\r\n    2.96,\r\n    2,\r\n    1.52225999169612,\r\n    0.916216862683651,\r\n    0.697690083205935,\r\n    0.564990379697732,\r\n    0.606727111705233,\r\n    0.779681815973266,\r\n    0.818914495587276,\r\n    1.1,\r\n    0.9959653146903132,\r\n    0.9848597063218711,\r\n    0.9681808462356009,\r\n    0.9474264057724295,\r\n    0.9240940562732842,\r\n    0.8996814690790923,\r\n    0.8756863155307806,\r\n    0.8536062669692766,\r\n    0.834938994735507,\r\n    0.818477334445914,\r\n    0.817289151799047,\r\n    0.819677052798639,\r\n    0.810707638378628,\r\n    0.817530583857681,\r\n    0.815707321020905,\r\n    0.8028518426831,\r\n    0.800103566609769,\r\n    0.800212980878781,\r\n    0.798064156970278,\r\n    0.798752713214968,\r\n    0.797690808020777,\r\n    0.814211753585467,\r\n    0.803821924330681,\r\n    0.808124157658974,\r\n    0.816966341069406,\r\n    0.821453254982263,\r\n    0.824273219280578,\r\n    0.819600193954646,\r\n    0.822544320835509,\r\n    0.824502530692875,\r\n    0.814895425521932,\r\n    0.812233190453327,\r\n    0.8189935781408,\r\n    0.814139563221397,\r\n    0.80997249075991,\r\n    0.82046603205609,\r\n    0.82496113142205,\r\n    0.821804754013948,\r\n    0.829049054823123,\r\n    0.830439969487572,\r\n    0.826598863566217,\r\n    0.826840223865391,\r\n    0.828027285226087,\r\n    0.828279167695156,\r\n    0.820647111296166,\r\n    0.823714259525059,\r\n    0.832252271061479,\r\n    0.829072496089302,\r\n    0.829621148826791,\r\n    0.832768236176399,\r\n    0.836855902872413,\r\n    0.833991117902976,\r\n    0.828510084731257,\r\n    0.83771774730889,\r\n    0.843336051283624,\r\n    0.832546905483789,\r\n    0.832974783921355,\r\n    0.836190069319002,\r\n    0.836608680408136,\r\n    0.838446433119127,\r\n    0.837166588572552,\r\n    0.835188762768623,\r\n    0.836301599938226,\r\n    0.836045018670666,\r\n    0.833574798590908,\r\n    0.831565316771915,\r\n    0.830922635416699,\r\n    0.826454531812634,\r\n    0.828289993460972,\r\n    0.833762667277031,\r\n    0.831582912774477,\r\n    0.832801373863152,\r\n    0.835011696819013,\r\n    0.833498124066689,\r\n    0.832240163158595,\r\n    0.832181733177287,\r\n    0.831980988238547,\r\n    0.829514285285791,\r\n    0.830533690400771,\r\n    0.831536529965583,\r\n    0.829115518767604,\r\n    0.826548428545872,\r\n    0.828867706002078,\r\n    0.827500345769445,\r\n    0.823318574626079,\r\n    0.819414128120287,\r\n    0.818182477287828,\r\n    0.8159514890378,\r\n    0.812614421946414,\r\n    0.814099933566455,\r\n    0.810767388223945,\r\n    0.808158538742486,\r\n    0.803837527854491,\r\n    0.807487381114487,\r\n    0.807772415966666,\r\n    0.807884653000459,\r\n    0.808212204806374,\r\n    0.807256080386501,\r\n    0.804963618797584,\r\n    0.803001211727414,\r\n    0.801894414455576,\r\n    0.800343105848522,\r\n    0.798664043236121,\r\n    0.795718588487634,\r\n    0.795420159359763,\r\n    0.793835518067804,\r\n    0.792132848948986,\r\n    0.789133263426934,\r\n    0.789276626747251,\r\n    0.787709609129926,\r\n    0.786290443680527,\r\n    0.785009995637458,\r\n    0.783645875064398\r\n  ],\r\n  \"transformation\": 0,\r\n  \"freq\": 172,\r\n  \"mnemonic\": \"FSPVOL_I_US\",\r\n  \"dateExecuted\": 1608589606270,\r\n  \"customSeries\": false,\r\n  \"historyModified\": false,\r\n  \"isModified\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://api.economy.com/scenario-studio/v2/project/{{projectId}}/scenario/{{scenarioId}}/data-series/FSPVOL_I_US/data/local",
+							"protocol": "https",
+							"host": [
+								"api",
+								"economy",
+								"com"
+							],
+							"path": [
+								"scenario-studio",
+								"v2",
+								"project",
+								"{{projectId}}",
+								"scenario",
+								"{{scenarioId}}",
+								"data-series",
+								"FSPVOL_I_US",
+								"data",
+								"local"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "data-series-clear-addfactors",
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "clientSecret",
+									"value": "{{privateKeyId}}",
+									"type": "string"
+								},
+								{
+									"key": "clientId",
+									"value": "{{accessKeyId}}",
+									"type": "string"
+								},
+								{
+									"key": "tokenName",
+									"value": "bearer",
+									"type": "string"
+								},
+								{
+									"key": "headerPrefix",
+									"value": "Bearer",
+									"type": "string"
+								},
+								{
+									"key": "grant_type",
+									"value": "client_credentials",
+									"type": "string"
+								},
+								{
+									"key": "redirect_uri",
+									"value": "https://api.economy.com/scenario-studio/v2/oauth2/callback",
+									"type": "string"
+								},
+								{
+									"key": "authUrl",
+									"value": "https://api.economy.com/scenario-studio/v2/oauth2/authorize",
+									"type": "string"
+								},
+								{
+									"key": "client_authentication",
+									"value": "header",
+									"type": "string"
+								},
+								{
+									"key": "accessTokenUrl",
+									"value": "https://api.economy.com/scenario-studio/v2/oauth2/token",
+									"type": "string"
+								},
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\"FRBAAC_US_A\"]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://api.economy.com/scenario-studio/v2/project/{{projectId}}/scenario/{{scenarioId}}/data-series/add-factor/local",
+							"protocol": "https",
+							"host": [
+								"api",
+								"economy",
+								"com"
+							],
+							"path": [
+								"scenario-studio",
+								"v2",
+								"project",
+								"{{projectId}}",
+								"scenario",
+								"{{scenarioId}}",
+								"data-series",
+								"add-factor",
+								"local"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Order",
+			"item": [
+				{
+					"name": "order-status",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "clientSecret",
+									"value": "{{privateKeyId}}",
+									"type": "string"
+								},
+								{
+									"key": "clientId",
+									"value": "{{accessKeyId}}",
+									"type": "string"
+								},
+								{
+									"key": "tokenName",
+									"value": "bearer",
+									"type": "string"
+								},
+								{
+									"key": "headerPrefix",
+									"value": "Bearer",
+									"type": "string"
+								},
+								{
+									"key": "grant_type",
+									"value": "client_credentials",
+									"type": "string"
+								},
+								{
+									"key": "redirect_uri",
+									"value": "https://api.economy.com/scenario-studio/v2/oauth2/callback",
+									"type": "string"
+								},
+								{
+									"key": "authUrl",
+									"value": "https://api.economy.com/scenario-studio/v2/oauth2/authorize",
+									"type": "string"
+								},
+								{
+									"key": "client_authentication",
+									"value": "header",
+									"type": "string"
+								},
+								{
+									"key": "accessTokenUrl",
+									"value": "https://api.economy.com/scenario-studio/v2/oauth2/token",
+									"type": "string"
+								},
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://api.economy.com/scenario-studio/v2/project/{{projectId}}/order/{{orderId}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"economy",
+								"com"
+							],
+							"path": [
+								"scenario-studio",
+								"v2",
+								"project",
+								"{{projectId}}",
+								"order",
+								"{{orderId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "project-build-status",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "clientSecret",
+									"value": "{{privateKeyId}}",
+									"type": "string"
+								},
+								{
+									"key": "clientId",
+									"value": "{{accessKeyId}}",
+									"type": "string"
+								},
+								{
+									"key": "tokenName",
+									"value": "bearer",
+									"type": "string"
+								},
+								{
+									"key": "headerPrefix",
+									"value": "Bearer",
+									"type": "string"
+								},
+								{
+									"key": "grant_type",
+									"value": "client_credentials",
+									"type": "string"
+								},
+								{
+									"key": "redirect_uri",
+									"value": "https://api.economy.com/scenario-studio/v2/oauth2/callback",
+									"type": "string"
+								},
+								{
+									"key": "authUrl",
+									"value": "https://api.economy.com/scenario-studio/v2/oauth2/authorize",
+									"type": "string"
+								},
+								{
+									"key": "client_authentication",
+									"value": "header",
+									"type": "string"
+								},
+								{
+									"key": "accessTokenUrl",
+									"value": "https://api.economy.com/scenario-studio/v2/oauth2/token",
+									"type": "string"
+								},
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://api.economy.com/scenario-studio/v2/project/{{projectId}}/order/{{orderId}}/build",
+							"protocol": "https",
+							"host": [
+								"api",
+								"economy",
+								"com"
+							],
+							"path": [
+								"scenario-studio",
+								"v2",
+								"project",
+								"{{projectId}}",
+								"order",
+								"{{orderId}}",
+								"build"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Project",
+			"item": [
+				{
+					"name": "projects",
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "clientSecret",
+									"value": "{{privateKeyId}}",
+									"type": "string"
+								},
+								{
+									"key": "clientId",
+									"value": "{{accessKeyId}}",
+									"type": "string"
+								},
+								{
+									"key": "tokenName",
+									"value": "bearer",
+									"type": "string"
+								},
+								{
+									"key": "headerPrefix",
+									"value": "Bearer",
+									"type": "string"
+								},
+								{
+									"key": "grant_type",
+									"value": "client_credentials",
+									"type": "string"
+								},
+								{
+									"key": "redirect_uri",
+									"value": "https://api.economy.com/scenario-studio/v2/oauth2/callback",
+									"type": "string"
+								},
+								{
+									"key": "authUrl",
+									"value": "https://api.economy.com/scenario-studio/v2/oauth2/authorize",
+									"type": "string"
+								},
+								{
+									"key": "client_authentication",
+									"value": "header",
+									"type": "string"
+								},
+								{
+									"key": "accessTokenUrl",
+									"value": "https://api.economy.com/scenario-studio/v2/oauth2/token",
+									"type": "string"
+								},
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.economy.com/scenario-studio/v2/project",
+							"protocol": "https",
+							"host": [
+								"api",
+								"economy",
+								"com"
+							],
+							"path": [
+								"scenario-studio",
+								"v2",
+								"project"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "scenario-delete",
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "clientSecret",
+									"value": "{{privateKeyId}}",
+									"type": "string"
+								},
+								{
+									"key": "clientId",
+									"value": "{{accessKeyId}}",
+									"type": "string"
+								},
+								{
+									"key": "tokenName",
+									"value": "bearer",
+									"type": "string"
+								},
+								{
+									"key": "headerPrefix",
+									"value": "Bearer",
+									"type": "string"
+								},
+								{
+									"key": "grant_type",
+									"value": "client_credentials",
+									"type": "string"
+								},
+								{
+									"key": "redirect_uri",
+									"value": "https://api.economy.com/scenario-studio/v2/oauth2/callback",
+									"type": "string"
+								},
+								{
+									"key": "authUrl",
+									"value": "https://api.economy.com/scenario-studio/v2/oauth2/authorize",
+									"type": "string"
+								},
+								{
+									"key": "client_authentication",
+									"value": "header",
+									"type": "string"
+								},
+								{
+									"key": "accessTokenUrl",
+									"value": "https://api.economy.com/scenario-studio/v2/oauth2/token",
+									"type": "string"
+								},
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://api.economy.com/scenario-studio/v2/project/{{projectId}}/scenario/alias/blalt1",
+							"protocol": "https",
+							"host": [
+								"api",
+								"economy",
+								"com"
+							],
+							"path": [
+								"scenario-studio",
+								"v2",
+								"project",
+								"{{projectId}}",
+								"scenario",
+								"alias",
+								"blalt1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create-project",
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "clientSecret",
+									"value": "{{privateKeyId}}",
+									"type": "string"
+								},
+								{
+									"key": "clientId",
+									"value": "{{accessKeyId}}",
+									"type": "string"
+								},
+								{
+									"key": "tokenName",
+									"value": "bearer",
+									"type": "string"
+								},
+								{
+									"key": "headerPrefix",
+									"value": "Bearer",
+									"type": "string"
+								},
+								{
+									"key": "grant_type",
+									"value": "client_credentials",
+									"type": "string"
+								},
+								{
+									"key": "redirect_uri",
+									"value": "https://api.economy.com/scenario-studio/v2/oauth2/callback",
+									"type": "string"
+								},
+								{
+									"key": "authUrl",
+									"value": "https://api.economy.com/scenario-studio/v2/oauth2/authorize",
+									"type": "string"
+								},
+								{
+									"key": "client_authentication",
+									"value": "header",
+									"type": "string"
+								},
+								{
+									"key": "accessTokenUrl",
+									"value": "https://api.economy.com/scenario-studio/v2/oauth2/token",
+									"type": "string"
+								},
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"api v2-rev3\",\r\n    \"description\": \"optional description\",\r\n    \"tags\": [\"2020\",\"December\"]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://api.economy.com/scenario-studio/v2/project/create",
+							"protocol": "https",
+							"host": [
+								"api",
+								"economy",
+								"com"
+							],
+							"path": [
+								"scenario-studio",
+								"v2",
+								"project",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "scenario-copy",
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "clientSecret",
+									"value": "{{privateKeyId}}",
+									"type": "string"
+								},
+								{
+									"key": "clientId",
+									"value": "{{accessKeyId}}",
+									"type": "string"
+								},
+								{
+									"key": "tokenName",
+									"value": "bearer",
+									"type": "string"
+								},
+								{
+									"key": "headerPrefix",
+									"value": "Bearer",
+									"type": "string"
+								},
+								{
+									"key": "grant_type",
+									"value": "client_credentials",
+									"type": "string"
+								},
+								{
+									"key": "redirect_uri",
+									"value": "https://api.economy.com/scenario-studio/v2/oauth2/callback",
+									"type": "string"
+								},
+								{
+									"key": "authUrl",
+									"value": "https://api.economy.com/scenario-studio/v2/oauth2/authorize",
+									"type": "string"
+								},
+								{
+									"key": "client_authentication",
+									"value": "header",
+									"type": "string"
+								},
+								{
+									"key": "accessTokenUrl",
+									"value": "https://api.economy.com/scenario-studio/v2/oauth2/token",
+									"type": "string"
+								},
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"alias\": \"bl\", \r\n  \"id\": \"{{readScenarioId}}\",  \r\n  \"title\": \"Global Macro Baseline (June 2020)\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://api.economy.com/scenario-studio/v2/project/{{projectId}}/scenario/copy",
+							"protocol": "https",
+							"host": [
+								"api",
+								"economy",
+								"com"
+							],
+							"path": [
+								"scenario-studio",
+								"v2",
+								"project",
+								"{{projectId}}",
+								"scenario",
+								"copy"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "scenario-clone",
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "clientSecret",
+									"value": "{{privateKeyId}}",
+									"type": "string"
+								},
+								{
+									"key": "clientId",
+									"value": "{{accessKeyId}}",
+									"type": "string"
+								},
+								{
+									"key": "tokenName",
+									"value": "bearer",
+									"type": "string"
+								},
+								{
+									"key": "headerPrefix",
+									"value": "Bearer",
+									"type": "string"
+								},
+								{
+									"key": "grant_type",
+									"value": "client_credentials",
+									"type": "string"
+								},
+								{
+									"key": "redirect_uri",
+									"value": "https://api.economy.com/scenario-studio/v2/oauth2/callback",
+									"type": "string"
+								},
+								{
+									"key": "authUrl",
+									"value": "https://api.economy.com/scenario-studio/v2/oauth2/authorize",
+									"type": "string"
+								},
+								{
+									"key": "client_authentication",
+									"value": "header",
+									"type": "string"
+								},
+								{
+									"key": "accessTokenUrl",
+									"value": "https://api.economy.com/scenario-studio/v2/oauth2/token",
+									"type": "string"
+								},
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"alias\": \"bl\",\r\n  \"permissions\": null,\r\n  \"truncate\": true,\r\n  \"id\": \"{{baseScenarioId}}\",\r\n  \"baseScenarioId\": null,\r\n  \"sharedownId\": \"E470DACB-A589-468E-9878-32C43F58FF6B\",\r\n  \"title\": \"Global Macro Baseline (June 2020)\",\r\n  \"titleUpper\": null,\r\n  \"modelType\": \"Global Macro\",\r\n  \"vintage\": 2046,\r\n  \"utcDateModified\": \"2020-06-09T15:49:03.187Z\",\r\n  \"utcDateCreated\": \"2020-06-09T15:49:03.187Z\",\r\n  \"unix\": 637273145431870000,\r\n  \"description\": \"\",\r\n  \"freq\": 172,\r\n  \"forecastStart\": 641,\r\n  \"forecastEnd\": 804,\r\n  \"historyStart\": 201,\r\n  \"displayStart\": 201,\r\n  \"displayEnd\": 804,\r\n  \"editStart\": 1,\r\n  \"maxIters\": 1000,\r\n  \"solving\": false,\r\n  \"convergence\": 9.99999993923e-9,\r\n  \"projectOwner\": null,\r\n  \"forecastEndCtrl\": \"2050Q4\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://api.economy.com/scenario-studio/v2/project/{{projectId}}/scenario/clone",
+							"protocol": "https",
+							"host": [
+								"api",
+								"economy",
+								"com"
+							],
+							"path": [
+								"scenario-studio",
+								"v2",
+								"project",
+								"{{projectId}}",
+								"scenario",
+								"clone"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "project-build",
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "clientSecret",
+									"value": "{{privateKeyId}}",
+									"type": "string"
+								},
+								{
+									"key": "clientId",
+									"value": "{{accessKeyId}}",
+									"type": "string"
+								},
+								{
+									"key": "tokenName",
+									"value": "bearer",
+									"type": "string"
+								},
+								{
+									"key": "headerPrefix",
+									"value": "Bearer",
+									"type": "string"
+								},
+								{
+									"key": "grant_type",
+									"value": "client_credentials",
+									"type": "string"
+								},
+								{
+									"key": "redirect_uri",
+									"value": "https://api.economy.com/scenario-studio/v2/oauth2/callback",
+									"type": "string"
+								},
+								{
+									"key": "authUrl",
+									"value": "https://api.economy.com/scenario-studio/v2/oauth2/authorize",
+									"type": "string"
+								},
+								{
+									"key": "client_authentication",
+									"value": "header",
+									"type": "string"
+								},
+								{
+									"key": "accessTokenUrl",
+									"value": "https://api.economy.com/scenario-studio/v2/oauth2/token",
+									"type": "string"
+								},
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://api.economy.com/scenario-studio/v2/project/{{projectId}}/build",
+							"protocol": "https",
+							"host": [
+								"api",
+								"economy",
+								"com"
+							],
+							"path": [
+								"scenario-studio",
+								"v2",
+								"project",
+								"{{projectId}}",
+								"build"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "project-search",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "clientSecret",
+									"value": "{{privateKeyId}}",
+									"type": "string"
+								},
+								{
+									"key": "clientId",
+									"value": "{{accessKeyId}}",
+									"type": "string"
+								},
+								{
+									"key": "tokenName",
+									"value": "bearer",
+									"type": "string"
+								},
+								{
+									"key": "headerPrefix",
+									"value": "Bearer",
+									"type": "string"
+								},
+								{
+									"key": "grant_type",
+									"value": "client_credentials",
+									"type": "string"
+								},
+								{
+									"key": "redirect_uri",
+									"value": "https://api.economy.com/scenario-studio/v2/oauth2/callback",
+									"type": "string"
+								},
+								{
+									"key": "authUrl",
+									"value": "https://api.economy.com/scenario-studio/v2/oauth2/authorize",
+									"type": "string"
+								},
+								{
+									"key": "client_authentication",
+									"value": "header",
+									"type": "string"
+								},
+								{
+									"key": "accessTokenUrl",
+									"value": "https://api.economy.com/scenario-studio/v2/oauth2/token",
+									"type": "string"
+								},
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://api.economy.com/scenario-studio/v2/project/search?terms=baseline&sortBy=-score&matchAllTerms=false&skip=0&take=25",
+							"protocol": "https",
+							"host": [
+								"api",
+								"economy",
+								"com"
+							],
+							"path": [
+								"scenario-studio",
+								"v2",
+								"project",
+								"search"
+							],
+							"query": [
+								{
+									"key": "terms",
+									"value": "baseline"
+								},
+								{
+									"key": "sortBy",
+									"value": "-score"
+								},
+								{
+									"key": "matchAllTerms",
+									"value": "false"
+								},
+								{
+									"key": "skip",
+									"value": "0"
+								},
+								{
+									"key": "take",
+									"value": "25"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "project",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "clientSecret",
+									"value": "{{privateKeyId}}",
+									"type": "string"
+								},
+								{
+									"key": "clientId",
+									"value": "{{accessKeyId}}",
+									"type": "string"
+								},
+								{
+									"key": "tokenName",
+									"value": "bearer",
+									"type": "string"
+								},
+								{
+									"key": "headerPrefix",
+									"value": "Bearer",
+									"type": "string"
+								},
+								{
+									"key": "grant_type",
+									"value": "client_credentials",
+									"type": "string"
+								},
+								{
+									"key": "redirect_uri",
+									"value": "https://api.economy.com/scenario-studio/v2/oauth2/callback",
+									"type": "string"
+								},
+								{
+									"key": "authUrl",
+									"value": "https://api.economy.com/scenario-studio/v2/oauth2/authorize",
+									"type": "string"
+								},
+								{
+									"key": "client_authentication",
+									"value": "header",
+									"type": "string"
+								},
+								{
+									"key": "accessTokenUrl",
+									"value": "https://api.economy.com/scenario-studio/v2/oauth2/token",
+									"type": "string"
+								},
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://api.economy.com/scenario-studio/v2/project/{{projectId}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"economy",
+								"com"
+							],
+							"path": [
+								"scenario-studio",
+								"v2",
+								"project",
+								"{{projectId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "project-search-count",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "clientSecret",
+									"value": "{{privateKeyId}}",
+									"type": "string"
+								},
+								{
+									"key": "clientId",
+									"value": "{{accessKeyId}}",
+									"type": "string"
+								},
+								{
+									"key": "tokenName",
+									"value": "bearer",
+									"type": "string"
+								},
+								{
+									"key": "headerPrefix",
+									"value": "Bearer",
+									"type": "string"
+								},
+								{
+									"key": "grant_type",
+									"value": "client_credentials",
+									"type": "string"
+								},
+								{
+									"key": "redirect_uri",
+									"value": "https://api.economy.com/scenario-studio/v2/oauth2/callback",
+									"type": "string"
+								},
+								{
+									"key": "authUrl",
+									"value": "https://api.economy.com/scenario-studio/v2/oauth2/authorize",
+									"type": "string"
+								},
+								{
+									"key": "client_authentication",
+									"value": "header",
+									"type": "string"
+								},
+								{
+									"key": "accessTokenUrl",
+									"value": "https://api.economy.com/scenario-studio/v2/oauth2/token",
+									"type": "string"
+								},
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://api.economy.com/scenario-studio/v2/project/search/count?terms=baseline&sortBy=-score&matchAllTerms=false&skip=0&take=25",
+							"protocol": "https",
+							"host": [
+								"api",
+								"economy",
+								"com"
+							],
+							"path": [
+								"scenario-studio",
+								"v2",
+								"project",
+								"search",
+								"count"
+							],
+							"query": [
+								{
+									"key": "terms",
+									"value": "baseline"
+								},
+								{
+									"key": "sortBy",
+									"value": "-score"
+								},
+								{
+									"key": "matchAllTerms",
+									"value": "false"
+								},
+								{
+									"key": "skip",
+									"value": "0"
+								},
+								{
+									"key": "take",
+									"value": "25"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		},
 		{
 			"name": "base-scenario-details",
@@ -239,271 +1746,6 @@
 			"response": []
 		},
 		{
-			"name": "create-project",
-			"request": {
-				"auth": {
-					"type": "oauth2",
-					"oauth2": [
-						{
-							"key": "clientSecret",
-							"value": "{{privateKeyId}}",
-							"type": "string"
-						},
-						{
-							"key": "clientId",
-							"value": "{{accessKeyId}}",
-							"type": "string"
-						},
-						{
-							"key": "tokenName",
-							"value": "bearer",
-							"type": "string"
-						},
-						{
-							"key": "headerPrefix",
-							"value": "Bearer",
-							"type": "string"
-						},
-						{
-							"key": "grant_type",
-							"value": "client_credentials",
-							"type": "string"
-						},
-						{
-							"key": "redirect_uri",
-							"value": "https://api.economy.com/scenario-studio/v2/oauth2/callback",
-							"type": "string"
-						},
-						{
-							"key": "authUrl",
-							"value": "https://api.economy.com/scenario-studio/v2/oauth2/authorize",
-							"type": "string"
-						},
-						{
-							"key": "client_authentication",
-							"value": "header",
-							"type": "string"
-						},
-						{
-							"key": "accessTokenUrl",
-							"value": "https://api.economy.com/scenario-studio/v2/oauth2/token",
-							"type": "string"
-						},
-						{
-							"key": "addTokenTo",
-							"value": "header",
-							"type": "string"
-						}
-					]
-				},
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"title\": \"api v2-rev3\",\r\n    \"description\": \"optional description\",\r\n    \"tags\": [\"2020\",\"December\"]\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "https://api.economy.com/scenario-studio/v2/project/create",
-					"protocol": "https",
-					"host": [
-						"api",
-						"economy",
-						"com"
-					],
-					"path": [
-						"scenario-studio",
-						"v2",
-						"project",
-						"create"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "scenario-clone",
-			"request": {
-				"auth": {
-					"type": "oauth2",
-					"oauth2": [
-						{
-							"key": "clientSecret",
-							"value": "{{privateKeyId}}",
-							"type": "string"
-						},
-						{
-							"key": "clientId",
-							"value": "{{accessKeyId}}",
-							"type": "string"
-						},
-						{
-							"key": "tokenName",
-							"value": "bearer",
-							"type": "string"
-						},
-						{
-							"key": "headerPrefix",
-							"value": "Bearer",
-							"type": "string"
-						},
-						{
-							"key": "grant_type",
-							"value": "client_credentials",
-							"type": "string"
-						},
-						{
-							"key": "redirect_uri",
-							"value": "https://api.economy.com/scenario-studio/v2/oauth2/callback",
-							"type": "string"
-						},
-						{
-							"key": "authUrl",
-							"value": "https://api.economy.com/scenario-studio/v2/oauth2/authorize",
-							"type": "string"
-						},
-						{
-							"key": "client_authentication",
-							"value": "header",
-							"type": "string"
-						},
-						{
-							"key": "accessTokenUrl",
-							"value": "https://api.economy.com/scenario-studio/v2/oauth2/token",
-							"type": "string"
-						},
-						{
-							"key": "addTokenTo",
-							"value": "header",
-							"type": "string"
-						}
-					]
-				},
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n  \"alias\": \"bl\",\r\n  \"permissions\": null,\r\n  \"truncate\": true,\r\n  \"id\": \"{{baseScenarioId}}\",\r\n  \"baseScenarioId\": null,\r\n  \"sharedownId\": \"E470DACB-A589-468E-9878-32C43F58FF6B\",\r\n  \"title\": \"Global Macro Baseline (June 2020)\",\r\n  \"titleUpper\": null,\r\n  \"modelType\": \"Global Macro\",\r\n  \"vintage\": 2046,\r\n  \"utcDateModified\": \"2020-06-09T15:49:03.187Z\",\r\n  \"utcDateCreated\": \"2020-06-09T15:49:03.187Z\",\r\n  \"unix\": 637273145431870000,\r\n  \"description\": \"\",\r\n  \"freq\": 172,\r\n  \"forecastStart\": 641,\r\n  \"forecastEnd\": 804,\r\n  \"historyStart\": 201,\r\n  \"displayStart\": 201,\r\n  \"displayEnd\": 804,\r\n  \"editStart\": 1,\r\n  \"maxIters\": 1000,\r\n  \"solving\": false,\r\n  \"convergence\": 9.99999993923e-9,\r\n  \"projectOwner\": null,\r\n  \"forecastEndCtrl\": \"2050Q4\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "https://api.economy.com/scenario-studio/v2/project/{{projectId}}/scenario/clone",
-					"protocol": "https",
-					"host": [
-						"api",
-						"economy",
-						"com"
-					],
-					"path": [
-						"scenario-studio",
-						"v2",
-						"project",
-						"{{projectId}}",
-						"scenario",
-						"clone"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "scenario-copy",
-			"request": {
-				"auth": {
-					"type": "oauth2",
-					"oauth2": [
-						{
-							"key": "clientSecret",
-							"value": "{{privateKeyId}}",
-							"type": "string"
-						},
-						{
-							"key": "clientId",
-							"value": "{{accessKeyId}}",
-							"type": "string"
-						},
-						{
-							"key": "tokenName",
-							"value": "bearer",
-							"type": "string"
-						},
-						{
-							"key": "headerPrefix",
-							"value": "Bearer",
-							"type": "string"
-						},
-						{
-							"key": "grant_type",
-							"value": "client_credentials",
-							"type": "string"
-						},
-						{
-							"key": "redirect_uri",
-							"value": "https://api.economy.com/scenario-studio/v2/oauth2/callback",
-							"type": "string"
-						},
-						{
-							"key": "authUrl",
-							"value": "https://api.economy.com/scenario-studio/v2/oauth2/authorize",
-							"type": "string"
-						},
-						{
-							"key": "client_authentication",
-							"value": "header",
-							"type": "string"
-						},
-						{
-							"key": "accessTokenUrl",
-							"value": "https://api.economy.com/scenario-studio/v2/oauth2/token",
-							"type": "string"
-						},
-						{
-							"key": "addTokenTo",
-							"value": "header",
-							"type": "string"
-						}
-					]
-				},
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n  \"alias\": \"bl\",\r\n  \"permissions\": null,\r\n  \"truncate\": true,\r\n  \"id\": \"{{readScenarioId}}\",\r\n  \"baseScenarioId\": null,\r\n  \"sharedownId\": \"E470DACB-A589-468E-9878-32C43F58FF6B\",\r\n  \"title\": \"Global Macro Baseline (June 2020)\",\r\n  \"titleUpper\": null,\r\n  \"modelType\": \"Global Macro\",\r\n  \"vintage\": 2046,\r\n  \"utcDateModified\": \"2020-06-09T15:49:03.187Z\",\r\n  \"utcDateCreated\": \"2020-06-09T15:49:03.187Z\",\r\n  \"unix\": 637273145431870000,\r\n  \"description\": \"\",\r\n  \"freq\": 172,\r\n  \"forecastStart\": 641,\r\n  \"forecastEnd\": 804,\r\n  \"historyStart\": 201,\r\n  \"displayStart\": 201,\r\n  \"displayEnd\": 804,\r\n  \"editStart\": 1,\r\n  \"maxIters\": 1000,\r\n  \"solving\": false,\r\n  \"convergence\": 9.99999993923e-9,\r\n  \"projectOwner\": null,\r\n  \"forecastEndCtrl\": \"2050Q4\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "https://api.economy.com/scenario-studio/v2/project/{{projectId}}/scenario/copy",
-					"protocol": "https",
-					"host": [
-						"api",
-						"economy",
-						"com"
-					],
-					"path": [
-						"scenario-studio",
-						"v2",
-						"project",
-						"{{projectId}}",
-						"scenario",
-						"copy"
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "base-scenarios-search",
 			"request": {
 				"auth": {
@@ -587,502 +1829,6 @@
 						"search"
 					],
 					"query": [
-						{
-							"key": "skip",
-							"value": "0"
-						},
-						{
-							"key": "take",
-							"value": "25"
-						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "project-build",
-			"request": {
-				"auth": {
-					"type": "oauth2",
-					"oauth2": [
-						{
-							"key": "clientSecret",
-							"value": "{{privateKeyId}}",
-							"type": "string"
-						},
-						{
-							"key": "clientId",
-							"value": "{{accessKeyId}}",
-							"type": "string"
-						},
-						{
-							"key": "tokenName",
-							"value": "bearer",
-							"type": "string"
-						},
-						{
-							"key": "headerPrefix",
-							"value": "Bearer",
-							"type": "string"
-						},
-						{
-							"key": "grant_type",
-							"value": "client_credentials",
-							"type": "string"
-						},
-						{
-							"key": "redirect_uri",
-							"value": "https://api.economy.com/scenario-studio/v2/oauth2/callback",
-							"type": "string"
-						},
-						{
-							"key": "authUrl",
-							"value": "https://api.economy.com/scenario-studio/v2/oauth2/authorize",
-							"type": "string"
-						},
-						{
-							"key": "client_authentication",
-							"value": "header",
-							"type": "string"
-						},
-						{
-							"key": "accessTokenUrl",
-							"value": "https://api.economy.com/scenario-studio/v2/oauth2/token",
-							"type": "string"
-						},
-						{
-							"key": "addTokenTo",
-							"value": "header",
-							"type": "string"
-						}
-					]
-				},
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "https://api.economy.com/scenario-studio/v2/project/{{projectId}}/build",
-					"protocol": "https",
-					"host": [
-						"api",
-						"economy",
-						"com"
-					],
-					"path": [
-						"scenario-studio",
-						"v2",
-						"project",
-						"{{projectId}}",
-						"build"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "project-search",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"auth": {
-					"type": "oauth2",
-					"oauth2": [
-						{
-							"key": "clientSecret",
-							"value": "{{privateKeyId}}",
-							"type": "string"
-						},
-						{
-							"key": "clientId",
-							"value": "{{accessKeyId}}",
-							"type": "string"
-						},
-						{
-							"key": "tokenName",
-							"value": "bearer",
-							"type": "string"
-						},
-						{
-							"key": "headerPrefix",
-							"value": "Bearer",
-							"type": "string"
-						},
-						{
-							"key": "grant_type",
-							"value": "client_credentials",
-							"type": "string"
-						},
-						{
-							"key": "redirect_uri",
-							"value": "https://api.economy.com/scenario-studio/v2/oauth2/callback",
-							"type": "string"
-						},
-						{
-							"key": "authUrl",
-							"value": "https://api.economy.com/scenario-studio/v2/oauth2/authorize",
-							"type": "string"
-						},
-						{
-							"key": "client_authentication",
-							"value": "header",
-							"type": "string"
-						},
-						{
-							"key": "accessTokenUrl",
-							"value": "https://api.economy.com/scenario-studio/v2/oauth2/token",
-							"type": "string"
-						},
-						{
-							"key": "addTokenTo",
-							"value": "header",
-							"type": "string"
-						}
-					]
-				},
-				"method": "GET",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "https://api.economy.com/scenario-studio/v2/project/search?terms=baseline&sortBy=-score&matchAllTerms=false&skip=0&take=25",
-					"protocol": "https",
-					"host": [
-						"api",
-						"economy",
-						"com"
-					],
-					"path": [
-						"scenario-studio",
-						"v2",
-						"project",
-						"search"
-					],
-					"query": [
-						{
-							"key": "terms",
-							"value": "baseline"
-						},
-						{
-							"key": "sortBy",
-							"value": "-score"
-						},
-						{
-							"key": "matchAllTerms",
-							"value": "false"
-						},
-						{
-							"key": "skip",
-							"value": "0"
-						},
-						{
-							"key": "take",
-							"value": "25"
-						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "project",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"auth": {
-					"type": "oauth2",
-					"oauth2": [
-						{
-							"key": "clientSecret",
-							"value": "{{privateKeyId}}",
-							"type": "string"
-						},
-						{
-							"key": "clientId",
-							"value": "{{accessKeyId}}",
-							"type": "string"
-						},
-						{
-							"key": "tokenName",
-							"value": "bearer",
-							"type": "string"
-						},
-						{
-							"key": "headerPrefix",
-							"value": "Bearer",
-							"type": "string"
-						},
-						{
-							"key": "grant_type",
-							"value": "client_credentials",
-							"type": "string"
-						},
-						{
-							"key": "redirect_uri",
-							"value": "https://api.economy.com/scenario-studio/v2/oauth2/callback",
-							"type": "string"
-						},
-						{
-							"key": "authUrl",
-							"value": "https://api.economy.com/scenario-studio/v2/oauth2/authorize",
-							"type": "string"
-						},
-						{
-							"key": "client_authentication",
-							"value": "header",
-							"type": "string"
-						},
-						{
-							"key": "accessTokenUrl",
-							"value": "https://api.economy.com/scenario-studio/v2/oauth2/token",
-							"type": "string"
-						},
-						{
-							"key": "addTokenTo",
-							"value": "header",
-							"type": "string"
-						}
-					]
-				},
-				"method": "GET",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "https://api.economy.com/scenario-studio/v2/project/{{projectId}}",
-					"protocol": "https",
-					"host": [
-						"api",
-						"economy",
-						"com"
-					],
-					"path": [
-						"scenario-studio",
-						"v2",
-						"project",
-						"{{projectId}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "project-build-status",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"auth": {
-					"type": "oauth2",
-					"oauth2": [
-						{
-							"key": "clientSecret",
-							"value": "{{privateKeyId}}",
-							"type": "string"
-						},
-						{
-							"key": "clientId",
-							"value": "{{accessKeyId}}",
-							"type": "string"
-						},
-						{
-							"key": "tokenName",
-							"value": "bearer",
-							"type": "string"
-						},
-						{
-							"key": "headerPrefix",
-							"value": "Bearer",
-							"type": "string"
-						},
-						{
-							"key": "grant_type",
-							"value": "client_credentials",
-							"type": "string"
-						},
-						{
-							"key": "redirect_uri",
-							"value": "https://api.economy.com/scenario-studio/v2/oauth2/callback",
-							"type": "string"
-						},
-						{
-							"key": "authUrl",
-							"value": "https://api.economy.com/scenario-studio/v2/oauth2/authorize",
-							"type": "string"
-						},
-						{
-							"key": "client_authentication",
-							"value": "header",
-							"type": "string"
-						},
-						{
-							"key": "accessTokenUrl",
-							"value": "https://api.economy.com/scenario-studio/v2/oauth2/token",
-							"type": "string"
-						},
-						{
-							"key": "addTokenTo",
-							"value": "header",
-							"type": "string"
-						}
-					]
-				},
-				"method": "GET",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "https://api.economy.com/scenario-studio/v2/project/{{projectId}}/order/{{orderId}}/build",
-					"protocol": "https",
-					"host": [
-						"api",
-						"economy",
-						"com"
-					],
-					"path": [
-						"scenario-studio",
-						"v2",
-						"project",
-						"{{projectId}}",
-						"order",
-						"{{orderId}}",
-						"build"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "project-search-count",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"auth": {
-					"type": "oauth2",
-					"oauth2": [
-						{
-							"key": "clientSecret",
-							"value": "{{privateKeyId}}",
-							"type": "string"
-						},
-						{
-							"key": "clientId",
-							"value": "{{accessKeyId}}",
-							"type": "string"
-						},
-						{
-							"key": "tokenName",
-							"value": "bearer",
-							"type": "string"
-						},
-						{
-							"key": "headerPrefix",
-							"value": "Bearer",
-							"type": "string"
-						},
-						{
-							"key": "grant_type",
-							"value": "client_credentials",
-							"type": "string"
-						},
-						{
-							"key": "redirect_uri",
-							"value": "https://api.economy.com/scenario-studio/v2/oauth2/callback",
-							"type": "string"
-						},
-						{
-							"key": "authUrl",
-							"value": "https://api.economy.com/scenario-studio/v2/oauth2/authorize",
-							"type": "string"
-						},
-						{
-							"key": "client_authentication",
-							"value": "header",
-							"type": "string"
-						},
-						{
-							"key": "accessTokenUrl",
-							"value": "https://api.economy.com/scenario-studio/v2/oauth2/token",
-							"type": "string"
-						},
-						{
-							"key": "addTokenTo",
-							"value": "header",
-							"type": "string"
-						}
-					]
-				},
-				"method": "GET",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "https://api.economy.com/scenario-studio/v2/project/search/count?terms=baseline&sortBy=-score&matchAllTerms=false&skip=0&take=25",
-					"protocol": "https",
-					"host": [
-						"api",
-						"economy",
-						"com"
-					],
-					"path": [
-						"scenario-studio",
-						"v2",
-						"project",
-						"search",
-						"count"
-					],
-					"query": [
-						{
-							"key": "terms",
-							"value": "baseline"
-						},
-						{
-							"key": "sortBy",
-							"value": "-score"
-						},
-						{
-							"key": "matchAllTerms",
-							"value": "false"
-						},
 						{
 							"key": "skip",
 							"value": "0"
@@ -1184,6 +1930,5 @@
 			},
 			"response": []
 		}
-	],
-	"protocolProfileBehavior": {}
+	]
 }
