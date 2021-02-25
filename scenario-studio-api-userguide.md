@@ -1,84 +1,30 @@
 # Moody's Analytics Scenario Studio API User Guide
 
-_version 1.0.1_
+_version 2.0.0_
 
 ## Introduction
 
-Scenario Studio API provides easy access to your project information and data from the Scenario Studio web application.  We provide several means of manual and automatic access that you can integrate with your workflow, among them, the Scenario Studio API (application program interface).  [Here](https://api.economy.com/scenario-studio/v1/swagger/ui/index#/) is a link to our Swagger API documentation.  The API uses HMAC and oAuth 2.0 authentication and JSON responses, and is agnostic regarding the client’s operating system and programming language. The API is throttled (rate-limited) to 300 requests per minute and one gigabyte of data per month. The Swagger documentation examples express the requests in cURL notation, but the [GitHub repository](https://github.com/moodysanalytics/scenario-studio.api.codesamples) contains examples in Python and R.
+Scenario Studio API provides easy programmatic control over Scenario Studio enabling process automation and workflow integration.  We provide a [Swagger API interface](https://api.economy.com/scenario-studio/v2/swagger/ui/index#/) to provide additional documentation and facilitate testing.  The Scenario Studio API supports both HMAC and oAuth 2.0 authentication and JSON responses, and is agnostic regarding the client’s operating system and programming language. The API is throttled (rate-limited) to 300 requests per minute and one gigabyte of data per month. The Swagger documentation examples express the requests in cURL notation, and the [GitHub repository](https://github.com/moodysanalytics/scenario-studio.api.codesamples) contains examples in Python and R.
 
 ## Overview
 
-The corresponding text details the Scenario Studio project content that can be accessed using the API.:
+The Scenario Studio v2 API core functions consist of several groups of endpoints for creating, editing, managing, and reading data and metadata from Scenario Studio projects.
 
-### DataSeries
-- To get the central data for series
-    - */project/{projectId}/scenario/{scenarioId}/data-series/{variableId}/data/central*
-
-
-- To get the local data for series
-    - */project/{projectId}/scenario/{scenarioId}/data-series/{variableId}/data/local*
-
-
-- To get multiple series and/or expressions
-    - */project/{projectId}/data-series*
-
-### Project
-- To get the list of projects the user has access to
-    - */project*
-
-
-- To get information about a specific project
-    - */project/{projectId}*
-
-
-- To get the scenarios within a project
-    - */project/{projectId}/scenario*
-
-
-- To get the list of all series within a project
-    - */project/{projectId}/series*
-
-
-- To get the list of series checked out by the current user
-    - */project/{projectId}/series/checked-out*
-
-
-### Scenario
-- To get information about a specific scenario
-    - */project/{projectId}/scenario/{scenarioId}*
-
-
-### Series
-- To get information about a specific series
-    - */project/{projectId}/scenario/{scenarioId}/series/{variableId}*
-
-
-- To get the equation specification for a series
-    - */project/{projectId}/scenario/{scenarioId}/series/{variableId}/equation*
-
-
-- To get the equation statistics for a series
-    - */project/{projectId}/scenario/{scenarioId}/series/{variableId}/equation-stats*
-    
-
-- To get the list of series that the current series depends on
-    - */project/{projectId}/scenario/{scenarioId}/series/{variableId}/dependencies*
-    
-
-- To get the list of series that depend on the current series
-    - */project/{projectId}/scenario/{scenarioId}/series/{variableId}/rhs*
-    
-
-- To get the full meta information (Equation Info, Equation Statistics, Dependencies, Rhs, etc)
-    - */project/{projectId}/scenario/{scenarioId}/series/{variableId}/meta*
-
+* /audit/... - Retrieve content and counts of records in a project's audit log
+* /project/... - Get metadata for a project, add and remove scenarios, and configure project settings
+  * /project/.../scenario/... - Get metadata for a scenario, run solves, and configure settings
+  * /project/.../data-series/... - Retrieve and push time series data to and from Scenario Studio
+  * /project/.../scenario/.../series/... - Get series information, claim/release, change state, and customize equations
+  * /project/.../search/ - Returns lists and counts of series within a project according to search parameters
+* .../order/... - Get status of brokerized processes such as solves and project builds
+* /base-scenario/... - Search and retrieve information about available base scenarios
 
 ## Authentication
 
 The Scenarion Studio API supports 2 forms of authentication:
 
-1.  HMAC Signature
-2.  OAuth 2.0 Token
+1. HMAC Signature
+2. OAuth 2.0 Token
 
 Both methods require Scenario Studio API access key and encryption key. Every request to the API must contain either an HMAC signature or OAuth Token.
 
@@ -150,7 +96,7 @@ The _oauth2/token_ endpoint is used to generate oAuth Token using your *access k
 curl -X POST \
   https://api.economy.com/scenario-studio/v1/oauth2/token \
   -H 'Content-Type: application/x-www-form-urlencoded' \
-  -d 'client_id=DB73FDF0-043C-4018-A7EB-CFB57356BA22' \  
+  -d 'client_id=DB73FDF0-043C-4018-A7EB-CFB57356BA22' \
   -d 'client_secret=47C7C2FEA-6D18-49A1-BEC9-193B67EAE87D' \
   -d 'grant_type=client_credentials'
 ```
@@ -178,124 +124,202 @@ curl -X GET \
 ```
 
 
-### Frequently asked questions
+## Frequently asked questions
 
-* What programming languages does the API support?
-* What response types are supported?
-* Can I use the API from Linux?
-* What kind of authentication does the API use?
-* How often do I need to regenerate the signature?
-* How often do I need to regenerate the token?
-* Is the API throttled?
-* What’s the fastest way to retrieve a large number of series?
-* Can I use the API to populate a data warehouse?
-* What kind of Scenario Studio information can I retrieve?
-* Which series can I retrieve?
-* Can I create or alter a project or scenario?
-* If I alter the name of a project using the Scenario Studio web application, do I need to change my code?
-* Whom do I contact for assistance in using the API?
-* Do other Moody’s Analytics products have APIs?
-* I don’t understand this jargon—can you translate?
+* General API use
+  * What programming languages does the API support?
+  * What response types are supported?
+  * Can I use the API from Linux?
+  * What kind of authentication does the API use?
+  * How often do I need to regenerate the signature?
+  * How often do I need to regenerate the token?
+  * Is the API throttled?
+  * Can I use the API to populate a data warehouse?
+* API capabilities
+  * What kind of Scenario Studio information can I retrieve?
+  * Can I create or alter a project or scenario?
+* Scenenario Studio API parameters
+  * How should date parameters be constructed?
+  * How many series can I retrieve with the data-series endpoint?
+  * If I alter the name of a project using the Scenario Studio web application, do I need to change my code?
+* Support
+  * Whom do I contact for assistance in using the API?
+  * Do other Moody’s Analytics products have APIs?
+  * I don’t understand this jargon—can you translate?
 
-#### What programming languages does the API support?
+### What programming languages does the API support?
 
 The programming language used at your end is immaterial, so long as it (a) creates HTTP requests that the API can process, and (b) can interpret the JSON-formatted responses produced by the API. The examples provided in this document and in the GitHub repository use cURL, Python and R.
 
-#### What response types are supported?
+### What response types are supported?
 
 JSON is the only response type returned by the API.
 
-#### Can I use the API from Linux?
+### Can I use the API from Linux?
 
 Yes, because the operating system is immaterial. Java, Python and R are commonly used on Linux machines; to run C#, you will need to install the .NET Core framework. Setting up your run-time environment is beyond the scope of this document.
 
-#### What kind of authentication does the API use?
+### What kind of authentication does the API use?
 
 Our API uses HMAC and OAuth 2.0 authentication. See the Authentication section above for more info.
 
-#### How often do I need to regenerate the signature?
+### How often do I need to regenerate the HMAC signature?
 
 You must re-create the signature prior to every request; otherwise you will receive the “HTTP 401 Unauthorized” error. You may find it useful to create a wrapper function that takes the time stamp, access key and encryption key as arguments, and generates a signature immediately before calling the endpoint.
 
-#### How often do I need to regenerate the token?
+### How often do I need to regenerate the oAuth 2.0 token?
 
 Once generated the oAuth token is valid for 1 hour and can be used for multiple requests.
 
-#### Is the API throttled?
+### Is the API throttled?
 
 Yes, in two ways. First, you can execute 300 requests per minute per account (but a single request can retrieve one series or a basket containing thousands of series). You will receive “HTTP 429 Too Many Requests” error. Second, you can retrieve only one gigabyte of data per month. This includes all of the metadata and HTTP headers, although these are insignificant relative to the data payload. The number of requests and series are not specifically limited.
 
-#### Can I use the API to populate a data warehouse?
+### Can I use the API to populate a data warehouse?
 
-Yes. You may create a data warehouse for internal use, but the number of users who may have access to it is stipulated by your contract; please contact your Moody’s Analytics sales representative if you have questions. 
+Yes. You may create a data warehouse for internal use, but the number of users who may have access to it is stipulated by your contract; please contact your Moody’s Analytics sales representative if you have questions.
 
-#### What kind of Scenario Studio information can I retrieve?
+### What kind of Scenario Studio information can I retrieve?
 
 The API can return Scenario Studio project, scenario, and series details and metadata, as well as series data.
 
-#### Which series can I retrieve?
+### Can I create or alter a project or scenario?
 
-You can retrieve any data to which you have access via the Scenario Studio web application, including all projects, scenario, and data series.
+Yes. The Scenario Studio v2 API now includes endpoints that enable project creation, scenario editing, and solving.
 
-#### Can I create or alter a project or scenario?
+### How should date parameters be constructed?
 
-No. The API is currently read-only; to alter projects, scenarios and data, you must use the Scenario Studio web application.
+Date parameters sent to API endpoints should be integers, defined as the number of periods since Dec 31 1849. For a quarterly series, this translates to 1850Q1=1, 1850Q2=2, etc. For a monthly series this is Jan1850=1, Feb1850=2, etc.
 
-#### If I alter the name of a project using the Scenario Studio web application, do I need to change my code?
+### How many series can I retrieve with the data-series endpoint?
+
+There is no hard limit on the number of series that can be retrieved with the POST version of the data-series endpoint. However, there is a practical limit when requests become too large there is a chance of a error 504 gateway timeout. When using the GET version of the data-series endpoint, there is the additional limit of query string length.
+
+### If I alter the name of a project using the Scenario Studio web application, do I need to change my code?
 
 No. The /project/{projectid} endpoint identifies a project by an immutable alphanumeric GUID that is assigned by our system, not the
 human-readable title assigned by you.
 
-#### Whom do I contact for assistance in using the API?
+### Whom do I contact for assistance in using the API?
 
 Please go to the Economy.com [Contact Us](https://www.economy.com/about/contact-us) page for email, chat, and telephone options. If using the email form, set Topic to “Technical Issue.”
 
-#### Do other Moody’s Analytics products have APIs?
+### Do other Moody’s Analytics products have APIs?
 
 Yes. We also provide APIs for our Data Buffet, AutoCycle, and Précis products.
 
-#### I don’t understand this jargon—can you translate?
+### I don’t understand this jargon—can you translate?
 
 Please see if the glossary in this document helps. It lists terminology pertaining to web APIs and related Moody’s Analytics products.
 
-### Appendix 1: API endpoints
+## Appendix 1: API endpoints
 
-All API endpoints below are relative to the root URL https://api.economy.com/scenario-studio/v1/.
+All API endpoints below are relative to the root URL https://api.economy.com/scenario-studio/v2/.
+
+### Project and scenario management end points
+
+These endpoints allow for the creation, modification, metadata retrieval, and solving of scenarios within projects.
+
+| HTTP             | Endpoint                                                                                         | Description                                                                               |
+| ---------------- | ------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------- |
+| **Project**                                                                                                                                                                                                     |
+| GET              | /project                                                                                         | Gets the list of projects to which the user has access.                                   |
+| GET              | /project/search                                                                                  | Gets the search records when searching for projects to which the user has access          |
+| GET              | /project/search/count                                                                            | Gets the count of search records when searching for projects to which the user has access |
+| GET              | /project/{projectId}                                                                             | Gets information about a specific project.                                                |
+| GET              | /project/{projectId}/scenario                                                                    | Gets the list of scenarios within a project.                                              |
+| GET              | /project/{projectId}/series                                                                      | Gets the list of all series within a project.                                             |
+| GET              | /project/{projectId}/geos                                                                        | Gets the list of geographies within a project.                                            |
+| GET              | /project/{projectId}/series/checked-out                                                          | Gets the list of series checked out by the current user.                                  |
+| GET              | /project/{projectId}/series/exogenized                                                           | Gets the list of exogenized series in a project.                                          |
+| GET              | /project/{projectId}/checkpoint/{scenarioId}                                                     | Gets the list of checkpoints for a scenario.                                              |
+| POST             | /project/create                                                                                  | Creates a new project.                                                                    |
+| POST             | /project/{projectId}/scenario/clone                                                              | Creates a copy of a scenario and adds it to a project.                                    |
+| POST             | /project/{projectId}/scenario/copy                                                               | Adds a read-only copy of a scenario to a project                                          |
+| POST             | /project/{projectId}/build                                                                       | Starts the build process for a project                                                    |
+| PUT              | /project/{projectId}/settings                                                                    | Update a project's settings.                                                              |
+| PUT              | /project/{projectId}/contributor/{role}                                                          | Adds contributors to a project.                                                           |
+| DELETE           | /project/{projectId}                                                                             | Deletes a project.                                                                        |
+| DELETE           | /project/{projectId}/scenario/alias/{alias}                                                      | Removes a scenario from a project.                                                        |
+| **Scenario**                                                                                                                                                                                                    |
+| GET              | /project/{projectId}/scenario/{scenarioId}                                                       | Gets information about a specific scenario.                                               |
+| PUT              | /project/{projectId}/scenario/{scenarioId}                                                       | Update the scenario options.                                                              |
+| PUT              | /project/{projectId}/scenario/{scenarioId}/checkpoint/{checkpointId}                             | Creates backup checkpoint of the scenario, and restores the given checkpoint.             |
+| POST             | /project/{projectId}/scenario/{scenarioId}/solve/local                                           | Performs a local solve on a scenario.                                                     |
+| POST             | /project/{projectId}/scenario/{scenarioId}/solve/central                                         | Performs a central solve on a scenario.                                                   |
+| POST             | /project/{projectId}/scenario/reendogenize                                                       | Performs an add-factor solve.                                                             |
+| POST             | /project/{projectId}/scenario/{scenarioId}/checkpoint                                            | Creates new checkpoint.                                                                   |
+
+### Series-related end points
+
+These end points enable data and metadata retreival for series data. In addition, they enable editing data, equations, and state. Custom variables can also be added, modified, and deleted.
 
 | HTTP             | Endpoint                                                                                         | Description                                                                               |
 | ---------------- | ------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------- |
 | **DataSeries**                                                                                                                                                                                                  |
-| GET              | /project/{projectId}/scenario/{scenarioId}/data-series/{variableId}/data/central                 | Gets the central data for the series.                                                     |
-| GET              | /project/{projectId}/scenario/{scenarioId}/data-series/{variableId}/data/local                   | Gets the local data for the series.                                                       |
-| GET              | /project/{projectId}/data-series                                                                 | Gets multiple series and/or expresssions.                                                 |
-| **Project**                                                                                                                                                                                                     |
-| GET              | /project                                                                                         | Gets the list of projects to which the user has access.                                   |
-| GET              | /project/{projectId}                                                                             | Gets information about a specific project.                                                |
-| GET              | /project/{projectId}/scenario                                                                    | Gets the list of scenarios within a project.                                              |
-| GET              | /project/{projectId}/series                                                                      | Gets the list of all series within a project.                                             |
-| GET              | /project/{projectId}/series/checked-out                                                          | Gets the list of series checked out by the current user.                                  |
-| **Scenario**                                                                                                                                                                                                    |
-| GET              | /project/{projectId}/scenario/{scenarioId}                                                       | Gets information about a specific scenario.                                               |
+| POST             | /project/{projectId}/data-series                                                                 | Gets multiple series and/or expresssions                                                  |
+| GET              | /project/{projectId}/data-series                                                                 | Gets multiple series and/or expresssions                                                  |
+| PUT              | /project/{projectId}/scenario/{scenarioId}/data-series/{variableId}/data/local                   | Writes series data to a user's local copy of a scenario                                   |
+| PUT              | /project/{projectId}/scenario/{scenarioId}/data-series/add-factor/local                          | Zero out add factors for a list of series in a user's local copy of a scenario            |
 | **Series**                                                                                                                                                                                                      |
-| GET              | /project/{projectId}/scenario/{scenarioId}/series/{variableId}                                   | Gets information about a specific series.                                                 |
-| GET              | /project/{projectId}/scenario/{scenarioId}/series/{variableId}/equation                          | Gets the equation specification for a series.                                             |
-| GET              | /project/{projectId}/scenario/{scenarioId}/series/{variableId}/equeation-stats                   | Gets the equation statiistics for a series.                                               |
-| GET              | /project/{projectId}/scenario/{scenarioId}/series/{variableId}/dependencies                      | Gets the list of series upon which the specified series depends                           |
-| GET              | /project/{projectId}/scenario/{scenarioId}/series/{variableId}/rhs                               | Gets the list of series that depend upon the specified series                             |
-| GET              | /project/{projectId}/scenario/{scenarioId}/series/{variableId}/meta                              | Gets the full series meta information (Equation info, statistics, dependencies, etc.)     |
+| GET              | /project/{projectId}/scenario/{scenarioId}/{variableId}                                          | Gets basic information about a specific series.                                           |
+| GET              | /project/{projectId}/scenario/{scenarioId}/variable/{variableId}                                 | Gets all meta information for a series.                                                   |
+| GET              | /project/{projectId}/scenario/{scenarioId}/series/{variableId}/sharedown                         | Gets sharedown information for a series.                                                  |
+| POST             | /project/{projectId}/scenario/{scenarioId}/series/info                                           | Gets series info for a list of series/expressions.                                        |
+| POST             | /project/{projectId}/scenario/{scenarioId}/series/custom                                         | Creates new custom series.                                                                |
+| POST             | /project/{projectId}/scenario/{scenarioId}/series/{variableId}/sharedown                         | Checks out all variables within a sharedown chain, and starts the sharedown calculation.  |
+| POST             | /project/{projectId}/scenario/{scenarioId}/series/checkout                                       | Claim out series.                                                                         |
+| POST             | /project/{projectId}/scenario/{scenarioId}/series/checkin                                        | Releases a series/unlocks a series without writing data to central.                       |
+| POST             | /project/{projectId}/scenario/{scenarioId}/series/commit                                         | Push to central/commit a series- writes local data to central.                            |
+| PUT              | /project/{projectId}/scenario/{scenarioId}/series/exogenize                                      | Sets series' state to exogenous.                                                          |
+| PUT              | /project/{projectId}/scenario/{scenarioId}/series/exogenize-through                              | Sets series to be partially exogenized.                                                   |
+| PUT              | /project/{projectId}/scenario/{scenarioId}/series/endogenizeBulk                                 | Sets series' state to endogenous.                                                         |
+| PUT              | /project/{projectId}/scenario/{scenarioId}/series/{variableId}/equation                          | Edits the equation of a series.                                                           |
+| PUT              | /project/{projectId}/scenario/{scenarioId}/series/custom                                         | Edits a custom series.                                                                    |
+| PUT              | /project/{projectId}/scenario/{scenarioId}/series/{variableId}/historical/{lastHistorical}       | Changes the last historical end point for a series.                                       |
+| DELETE           | /project/{projectId}/scenario/{scenarioId}/series/custom                                         | Deletes custom series.                                                                    |
 
-### Appendix 2: Error messages
+### Miscellaneous endpoints
 
-The error codes returned by the Scenario Studio API are adaptations of standard HTTP server response codes.
+| HTTP             | Endpoint                                                                                         | Description                                                                               |
+| ---------------- | ------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------- |
+| **Order**                                                                                                                                                                                                       |
+| GET              | /project/{projectId}/order/{orderId}                                                             | Gets information on any single order.                                                     |
+| GET              | /project/{projectId}/order/{orderId}/build                                                       | Checks the project build order status.                                                    |
+| **SeriesSearch**                                                                                                                                                                                                |
+| POST             | /project/{projectId}/search/count                                                                | Gets the record count for a series search query.                                          |
+| POST             | /project/{projectId}/search/results                                                              | Gets the records for a series search query.                                               |
+| **Audit**                                                                                                                                                                                                       |
+| GET              | /audit/project/{projectId}/count                                                                 | Gets the record count for an audit search query.                                          |
+| GET              | /audit/project/{projectId}                                                                       | Gets the records for an audit search query.                                               |
+| **Universe**                                                                                                                                                                                                    |
+| GET              | /group/client                                                                                    | Gets the list of permissionable clients (in the context of the person making the request).|
+| GET              | /base-scenario/{scenarioId}                                                                      | Gets base/Moody's scenario detail.                                                        |
+| GET              | /base-scenario                                                                                   | Get the list of base/moody's scenarios.                                                   |
+| GET              | /base-scenario/{scenarioId}/details                                                              | Gets the full details on a base scenario.                                                 |
+| POST             | /base-scenario/search                                                                            | Gets the records for a base scenario search query.                                        |
+| POST             | /base-scenario/search/count                                                                      | Gets the record count for a base scenario search query.                                   |
+| POST             | /project/scenario/search                                                                         | Gets the records for a client scenario search query.                                      |
+| POST             | /project/scenario/search/count                                                                   | Gets the record count for a client scenario search query.                                 |
 
-| Error code                | Diagnosis                                                                                                                                                     |
+## Appendix 2: HTTP server response codes
+
+Codes returned by the Scenario Studio API are adaptations of standard HTTP server response codes.
+
+| Code                      | Meaning                                                                                                                                                       |
 | ------------------------- | --------------------------------------------------------------------------------------------------------------------------------------                        |
+| **Success codes**         |                                                                                                                                                               |
+| 200 OK                    | The request has succeeded                                                                                                                                     |
+| 304 Not modified          | The edits transmitted to Scenario Studio did not differ from teh data already on the server, thus nothing was changed                                         |
+| **Error codes**           |                                                                                                                                                               |
 | 401 Unauthorized          | The authenticating HMAC signature is outdated or the oAuth token has expired. You must generate a new signature or access token (see Authentication section). |
+| 404 Not Found             | The URL path used was not found. Check the URL you are transmitting in your API request                                                                       |
 | 429 Too Many Requests     | You have exceeded the 300 request per minute rate limit. Throttling is access key-specific.                                                                   |
-| 500 Internal Server Error | Server error.                                                                                                                                                 |
+| 500 Internal Server Error | Server error - check your POST/PUT payload or query string arguments.                                                                                         |
+| 504 Gateway Timeout       | The request is too large. Consider breaking the request into batches.                                                                                         |
 
 
-### Further reading
+## Further reading
 
 ##### API documentation and functionality
 
@@ -304,7 +328,7 @@ The error codes returned by the Scenario Studio API are adaptations of standard 
 * [Code samples in C#, Java, Python, R](https://github.com/moodysanalytics/scenario-studio.api.codesamples)
 * How to authenticate (See Authentication section)
 
-### Glossary
+## Glossary
 
 **access key:** Part of the credentials used to access the Scenario Studio API. A unique 36-character hexadecimal string, which is combined with the encryption key (qv) to produce the signature (qv).
 
@@ -380,7 +404,7 @@ DISCLAIMER: Moody’s Analytics, a unit of Moody’s Corporation, provides econo
 
 Moody’s is an essential component of the global capital markets, providing credit ratings, research, tools and analysis that contribute to transparent and integrated financial markets. **Moody’s Corporation** (NYSE: MCO) is the parent company of Moody’s Investors Service, which provides credit ratings and research covering debt instruments and securities, and **Moody’s Analytics**, which encompasses the growing array of Moody’s nonratings businesses, including risk management software for financial institutions, quantitative credit analysis tools, economic research and data services, data and analytical tools for the structured finance market, and training and other professional services. The corporation, which reported revenue of $3.6 billion in 2016, employs approximately 11,500 people worldwide and maintains a presence in 41 countries.
 
-© 2019 Moody’s Corporation, Moody’s Investors Service, Inc., Moody’s Analytics, Inc. and/or their licensors and affiliates (collectively, “MOODY’S”). All rights reserved.
+© 2021 Moody’s Corporation, Moody’s Investors Service, Inc., Moody’s Analytics, Inc. and/or their licensors and affiliates (collectively, “MOODY’S”). All rights reserved.
 
 **CREDIT RATINGS ISSUED BY MOODY’S INVESTORS SERVICE, INC. AND ITS RATINGS AFFILIATES (“MIS”) ARE MOODY’S CURRENT OPINIONS OF THE RELATIVE FUTURE CREDIT RISK OF ENTITIES, CREDIT COMMITMENTS, OR DEBT OR DEBT-LIKE SECURITIES, AND MOODY’S PUBLICATIONS MAY INCLUDE MOODY’S CURRENT OPINIONS OF THE RELATIVE FUTURE CREDIT RISK OF ENTITIES, CREDIT COMMIT-MENTS, OR DEBT OR DEBT-LIKE SECURITIES. MOODY’S DEFINES CREDIT RISK AS THE RISK THAT AN ENTITY MAY NOT MEET ITS CONTRAC-TUAL, FINANCIAL OBLIGATIONS AS THEY COME DUE AND ANY ESTIMATED FINANCIAL LOSS IN THE EVENT OF DEFAULT. CREDIT RATINGS DO NOT ADDRESS ANY OTHER RISK, INCLUDING BUT NOT LIMITED TO: LIQUIDITY RISK, MARKET VALUE RISK, OR PRICE VOLATILITY. CREDIT RATINGS AND MOODY’S OPINIONS INCLUDED IN MOODY’S PUBLICATIONS ARE NOT STATEMENTS OF CURRENT OR HISTORICAL FACT. MOODY’S PUBLICATIONS MAY ALSO INCLUDE QUANTITATIVE MODEL-BASED ESTIMATES OF CREDIT RISK AND RELATED OPINIONS OR COMMENTARY PUBLISHED BY MOODY’S ANALYTICS, INC. CREDIT RATINGS AND MOODY’S PUBLICATIONS DO NOT CONSTITUTE OR PROVIDE INVESTMENT OR FINANCIAL ADVICE, AND CREDIT RATINGS AND MOODY’S PUBLICATIONS ARE NOT AND DO NOT PROVIDE RECOMMENDATIONS TO PURCHASE, SELL, OR HOLD PARTICULAR SECURITIES. NEITHER CREDIT RATINGS NOR MOODY’S PUBLICATIONS COMMENT ON THE SUITABILITY OF AN INVESTMENT FOR ANY PARTICULAR INVESTOR. MOODY’S ISSUES ITS CREDIT RATINGS AND PUB-LISHES MOODY’S PUBLICATIONS WITH THE EXPECTATION AND UNDERSTANDING THAT EACH INVESTOR WILL, WITH DUE CARE, MAKE ITS OWN STUDY AND EVALUATION OF EACH SECURITY THAT IS UNDER CONSIDERATION FOR PURCHASE, HOLDING, OR SALE.**
 
