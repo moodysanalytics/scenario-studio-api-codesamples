@@ -1,6 +1,6 @@
 # Moody's Analytics Scenario Studio API User Guide
 
-_version 2.0.0_
+_version 2_
 
 ## Introduction
 
@@ -122,7 +122,6 @@ curl -X GET \
   'https://api.economy.com/scenario-studio/v1/project' \
   -H 'Authorization: Bearer SrZ5UkbzPn432zqMLgV3Ja'
 ```
-
 
 ## Frequently asked questions
 
@@ -318,6 +317,42 @@ Codes returned by the Scenario Studio API are adaptations of standard HTTP serve
 | 500 Internal Server Error | Server error - check your POST/PUT payload or query string arguments.                                                                                         |
 | 504 Gateway Timeout       | The request is too large. Consider breaking the request into batches.                                                                                         |
 
+## Integer codes
+
+### Frequencies
+
+* 128 - Monthly
+* 172 - Quarterly
+* 204 - Annual
+
+### Variable types
+
+* 0 - Stochastic
+* 1 - Identity
+* 2 - Exogenous
+
+### Variable states
+
+Variable state is a bitwise argument in series search. Add codes together to combine.
+
+* 1 - Endogenous
+* 2 - Exogenous
+* 4 - Partially exogenous
+
+### Contributor roles
+
+* 0 - Inactive: No access to the project
+* 1 - Administrator: Read/write/solve access; access to configure project, scenario, and user access settings
+* 2 - Editor: Read/write/solve access
+* 3 - Observer: Read-only access
+
+### Claim status (checkedOut)
+
+Claim status is a bitwise argument in series search. Add codes together to combine.
+
+* 1 - Unclaimed
+* 2 - Claimed by others
+* 4 - Claimed by you
 
 ## Further reading
 
