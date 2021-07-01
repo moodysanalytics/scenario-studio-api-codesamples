@@ -160,10 +160,10 @@ MA_S2Api$set("public", "get_project_series", function(project_id) {
 })
 
 MA_S2Api$set("public", "make_project", function(title, 
-                                                tags=character(0), 
+                                                tags=list(), 
                                                 description="") {
   stopifnot(is.character(title),length(title) == 1)
-  stopifnot(is.character(tags))
+  stopifnot(is.list(tags))
   stopifnot(is.character(description),length(description) == 1)
   pl <- list(
     title = title,
@@ -182,30 +182,30 @@ MA_S2Api$set("public", "build_project", function(project_id) {
   return(ret)
 })
 
-MA_S2Api$set("public", "get_base_scenario_list", function(model_types=character(),
-                                                          terms=character(), 
-                                                          vintages=numeric(), 
+MA_S2Api$set("public", "get_base_scenario_list", function(model_types=list(),
+                                                          terms=list(), 
+                                                          vintages=list(), 
                                                           sortby="") {
-  stopifnot(is.character(model_types))
-  stopifnot(is.character(terms))
-  stopifnot(is.numeric(vintages))
+  stopifnot(is.list(model_types))
+  stopifnot(is.list(terms))
+  stopifnot(is.list(vintages))
   stopifnot(is.character(sortby),length(sortby) == 1)
   pl <- list()
-  if (length(model_types) > 0) pl$modelTypes <- as.list(model_types)
-  if (length(terms) > 0) pl$terms <- as.list(terms)
-  if (length(vintages) > 0) pl$vintages <- as.list(as.integer(vintages))
-  if (nchar(sortby) > 0) pl$sortbBy <- sortby
-  url <- paste0("/base-scenario/search")
+  if (length(model_types) > 0) pl$modelTypes <- model_types
+  if (length(terms) > 0) pl$terms <- terms
+  if (length(vintages) > 0) pl$vintages <- as.list(vintages)
+  if (nchar(sortby) > 0) pl$sortBy <- sortby
+  url <- paste0("/base-scenario/search?take=50")
   ret <- self$request(method ="post",url=url,payload=pl)
   return(ret)
 })
 
-MA_S2Api$set("public", "get_base_scenario_count", function(model_types=character(),
-                                                          terms=character(), 
-                                                          vintages=numeric()) {
-  stopifnot(is.character(model_types))
-  stopifnot(is.character(terms))
-  stopifnot(is.numeric(vintages))
+MA_S2Api$set("public", "get_base_scenario_count", function(model_types=list(),
+                                                           terms=list(), 
+                                                           vintages=list()) {
+  stopifnot(is.list(model_types))
+  stopifnot(is.list(terms))
+  stopifnot(is.list(vintages))
   pl <- list()
   if (length(model_types) > 0) pl$modelTypes <- as.list(model_types)
   if (length(terms) > 0) pl$terms <- as.list(terms)
@@ -250,7 +250,8 @@ MA_S2Api$set("public", "clone_scenario", function(project_id,
   stopifnot(is.character(project_id),length(project_id) == 1)
   stopifnot(is.character(scenario_id),length(scenario_id) == 1)
   stopifnot(is.character(alias),length(alias) == 1)
-  pl <- list(alias = alias)
+  pl <- self$get_base_scenario_info(scenario_id)
+  pl$alias = alias
   if (!is.null(title)) {
     stopifnot(is.character(title),length(title) == 1)
     pl$title <- title
@@ -268,7 +269,7 @@ MA_S2Api$set("public", "clone_scenario", function(project_id,
     pl$forecastEnd <- as.integer(forecast_end)
   }
   url <- paste0("/project/",project_id,"/scenario/clone")
-  ret <- self$request(method="post",url=url)  
+  ret <- self$request(method="post",url=url,payload=pl)  
   return(ret)
 })
 
@@ -592,15 +593,19 @@ MA_S2Api$set("public", "set_user_permission", function(project_id,
                                                        emails,
                                                        role) {
   stopifnot(is.character(project_id),length(project_id) == 1)
-  stopifnot(is.character(emails))
-  stopifnot(is.numeric(role),length(role) == 1)
+  stopifnot(is.list(emails))
+  stopifnot(is.numeric(role))
   users <- self$get_user_universe()
   user_emails <- sapply(users,function(u) {tolower(u$email)})
   user_sids <- sapply(users,function(u) {u$sid})
-  sids < user_sids[match(lower(emails),user_emails)]
-  pl <- as.list(sids)
+  sids <- as.list(user_sids[match(tolower(emails),user_emails)])
+  pl <- list()
+  for (sid in sids)
+  {
+    pl[[length(pl)+1]] <- list(sid=sid,role=role)
+  }
   url <- paste0("/project/",project_id,"/contributor/",role)
-  ret <- self$request(method = "post", url = url, payload = pl)  
+  ret <- self$request(method = "put", url = url, payload = pl)
   return(ret)
 })
 
