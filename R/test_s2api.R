@@ -1,4 +1,5 @@
-source("path to library")
+# Place the s2api.R library (available in this repo) in the same directory as this script
+source(paste0(dirname(sys.frame(1)$ofile),"/s2api.R"))
 
 # enter your keys here
 # obtain them from: https://economy.com/myeconomy/api-key-info
@@ -36,3 +37,4 @@ for (n in 1:5) {
   download_list = append(download_list,paste(scenario_alias,series_list[[n]]$variableId,sep="."))
 }
 data = s2api$get_series_data(project_id,series_list = download_list)
+
