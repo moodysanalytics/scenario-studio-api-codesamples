@@ -257,7 +257,6 @@ These end points enable data and metadata retreival for series data. In addition
 | ---------------- | ------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------- |
 | **DataSeries**                                                                                                                                                                                                  |
 | POST             | /project/{projectId}/data-series                                                                 | Gets multiple series and/or expresssions                                                  |
-| GET              | /project/{projectId}/data-series                                                                 | Gets multiple series and/or expresssions                                                  |
 | PUT              | /project/{projectId}/scenario/{scenarioId}/data-series/{variableId}/data/local                   | Writes series data to a user's local copy of a scenario                                   |
 | PUT              | /project/{projectId}/scenario/{scenarioId}/data-series/add-factor/local                          | Zero out add factors for a list of series in a user's local copy of a scenario            |
 | **Series**                                                                                                                                                                                                      |
