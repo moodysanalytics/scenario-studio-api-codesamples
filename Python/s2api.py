@@ -166,7 +166,7 @@ class ScenarioStudioAPI(BaseAPI):
     def get_base_scenario_count(self, model_types:list=[], terms:list=[], vintages:list=[]):
         url = f'{self._base_uri}/base-scenario/search/count'
         pl = {}
-        if len(modelTypes) > 0:
+        if len(model_types) > 0:
             pl['modelTypes'] = model_types
         if len(terms) > 0:
             pl['terms'] = terms
@@ -228,8 +228,14 @@ class ScenarioStudioAPI(BaseAPI):
         ret = self.request(url=url,method="get")
         return ret
 
-    def get_series_data(self, project_id:str, series_list:list, freq:int=172, batch:int=100, dates=None):
+    def get_series_data(self, project_id:str, series_list:list, freq:int=172, transformation:int=None, batch:int=100, start:int=None, end:int=None, dates=None):
         url = f'{self._base_uri}/project/{project_id}/data-series?frequency={freq}'
+        if transformation is not None:
+            url = f'{url}&transformation={transformation}'
+        if start is not None:
+            url = f'{url}&start={start}'
+        if end is not None:
+            url = f'{url}&end={end}'
         ret = {}
         for i in range(0,len(series_list),batch):
             pl = series_list[i:i+batch]
@@ -241,32 +247,6 @@ class ScenarioStudioAPI(BaseAPI):
                 series[abs(series) > 1.7e+38] = None
                 if dates is not None:
                     series = series.reindex(dates)
-                series.last_hist = pd.Period(series_obj['lastHistory'],pandas_freq)
-                series.description = series_obj['description']
-                series.geo = series_obj['geoCode']
-                ret[series_obj['mnemonic']] = series
-        return ret
-
-    def get_series_data2(self, project_id:str, series_list:list, freq:int=172, batch:int=20, transformation:int=None, start:int=None, end:int=None):
-        url = f'{self._base_uri}/project/{project_id}/data-series?frequency={freq}'
-        if transformation is not None:
-            url = f'{url}&transformation={transformation}'
-        if start is not None:
-            url = f'{url}&start={start}'
-        if end is not None:
-            url = f'{url}&end={end}'
-        ret = {}
-        for i in range(0,len(series_list),batch):
-            expressions = ''
-            for expression in series_list[i:i+batch]:
-                expressions = f'{expressions};{expression}'
-            url_batch = f'{url}&expressions={urllib.parse.quote(expressions[1:])}'
-            series_objs = self.request(url=url_batch,method="get")
-            for series_obj in series_objs:
-                pandas_freq = self.get_pandas_freq(series_obj['data']['freqCode'])
-                index = pd.period_range(pd.Period(series_obj['data']['startDate'],pandas_freq),periods=series_obj['data']['periods'])
-                series = pd.Series(series_obj['data']['data'],index)
-                series[abs(series) > 1.7e+38] = None
                 series.last_hist = pd.Period(series_obj['lastHistory'],pandas_freq)
                 series.description = series_obj['description']
                 series.geo = series_obj['geoCode']
@@ -298,22 +278,28 @@ class ScenarioStudioAPI(BaseAPI):
 
     def release(self, project_id:str, scenario_id:str, variables:list):
         url = f'{self._base_uri}/project/{project_id}/scenario/{scenario_id}/series/checkin'
-        ret = self.request(url=url,method="post",payload=variables)
+        pl = [x.upper() for x in variables]
+        ret = self.request(url=url,method="post",payload=pl)
         return ret
 
-    def push(self, project_id:str, scenario_id:str, variables:list):
+    def push(self, project_id:str, scenario_id:str, variables:list, note:str=None):
         url = f'{self._base_uri}/project/{project_id}/scenario/{scenario_id}/series/commit'
-        ret = self.request(url=url,method="post",payload=variables)
+        pl = {'variables': [x.upper() for x in variables]}
+        if note is not None:
+            pl['note'] = note
+        ret = self.request(url=url,method="post",payload=pl)
         return ret
 
     def endogenize(self, project_id:str, scenario_id:str, variables:list):
         url = f'{self._base_uri}/project/{project_id}/scenario/{scenario_id}/series/endogenizeBulk'
-        ret = self.request(url=url,method="put",payload=variables)
+        pl = [x.upper() for x in variables]
+        ret = self.request(url=url,method="put",payload=pl)
         return ret
 
     def exogenize(self, project_id:str, scenario_id:str, variables:list):
         url = f'{self._base_uri}/project/{project_id}/scenario/{scenario_id}/series/exogenize'
-        ret = self.request(url=url,method="put",payload=variables)
+        pl = [x.upper() for x in variables]
+        ret = self.request(url=url,method="put",payload=pl)
         return ret
 
     def write_series_data(self, project_id:str, scenario_id:str, variable:str, data):
@@ -437,3 +423,7 @@ class ScenarioStudioAPI(BaseAPI):
         ret = self.request(url=url,method="post",payload=[pl])
         return ret
 
+    def set_lasthist(self, project_id:str, scenario_id:str, variable:str, lasthist: int):
+        url = f'{self._base_uri}/project/{project_id}/scenario/{scenario_id}/series/{variable}/historical/{lasthist}'
+        ret = self.request(url=url,method="put")
+        return ret
