@@ -310,7 +310,7 @@ class ScenarioStudioAPI(BaseAPI):
         ret = self.request(url=url,method="put",payload=pl)
         return ret
 
-    def edit_project_settings(self, project_id:str, edit_identities:bool=None, require_comments:bool=None, edit_equations:bool=None, allow_custom_variables:bool=None):
+    def edit_project_settings(self, project_id:str, edit_identities:bool=None, require_comments:bool=None, edit_equations:bool=None, allow_custom_variables:bool=None, databuffet_alias:str=None):
         pl = self.get_project_info(project_id)
         url = f'{self._base_uri}/project/{project_id}/settings'
         if edit_identities is not None:
@@ -321,6 +321,8 @@ class ScenarioStudioAPI(BaseAPI):
             pl['allowEquationEditing'] = edit_equations
         if allow_custom_variables is not None:
             pl['allowCustomSeries'] = allow_custom_variables
+        if databuffet_alias is not None:
+            pl['alias'] = f'S2PRJ_{databuffet_alias}'
         ret = self.request(url=url,method="put",payload=pl)
         return ret
 
