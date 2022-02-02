@@ -241,16 +241,17 @@ class ScenarioStudioAPI(BaseAPI):
             pl = series_list[i:i+batch]
             series_objs = self.request(url=url,method="post",payload=pl)
             for series_obj in series_objs:
-                pandas_freq = self.get_pandas_freq(series_obj['data']['freqCode'])
-                index = pd.period_range(pd.Period(series_obj['data']['startDate'],pandas_freq),periods=series_obj['data']['periods'])
-                series = pd.Series(series_obj['data']['data'],index)
-                series[abs(series) > 1.7e+38] = None
-                if dates is not None:
-                    series = series.reindex(dates)
-                series.last_hist = pd.Period(series_obj['lastHistory'],pandas_freq)
-                series.description = series_obj['description']
-                series.geo = series_obj['geoCode']
-                ret[series_obj['mnemonic']] = series
+                if series_obj['status'].upper().strip() == 'OK':
+                    pandas_freq = self.get_pandas_freq(series_obj['data']['freqCode'])
+                    index = pd.period_range(pd.Period(series_obj['data']['startDate'],pandas_freq),periods=series_obj['data']['periods'])
+                    series = pd.Series(series_obj['data']['data'],index)
+                    series[abs(series) > 1.7e+38] = None
+                    if dates is not None:
+                        series = series.reindex(dates)
+                    series.last_hist = pd.Period(series_obj['lastHistory'],pandas_freq)
+                    series.description = series_obj['description']
+                    series.geo = series_obj['geoCode']
+                    ret[series_obj['mnemonic']] = series
         return ret
 
     def wait_for_orders(self, project_id:str, orders:list, build:bool=False, sleep:int=5):
@@ -299,6 +300,12 @@ class ScenarioStudioAPI(BaseAPI):
     def exogenize(self, project_id:str, scenario_id:str, variables:list):
         url = f'{self._base_uri}/project/{project_id}/scenario/{scenario_id}/series/exogenize'
         pl = [x.upper() for x in variables]
+        ret = self.request(url=url,method="put",payload=pl)
+        return ret
+
+    def exogenize_through(self, project_id:str, scenario_id:str, variables:list, date:int):
+        url = f'{self._base_uri}/project/{project_id}/scenario/{scenario_id}/series/exogenize-through'
+        pl = {'variables': [x.upper() for x in variables], 'exogenizeThrough': date}
         ret = self.request(url=url,method="put",payload=pl)
         return ret
 
