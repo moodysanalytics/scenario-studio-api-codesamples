@@ -322,8 +322,6 @@ MA_S2Api$set("public", "get_series_data", function(project_id,
     start <- (i-1)*batch
     end <- min(i*batch,num_series)
     pl <- as.list(series_list[start:end])
-    print("sending")
-    print(toJSON(pl))
     series_output <- self$request(method="post",url=url, payload=pl)
     for (series_obj in series_output) {
       ret[[series_obj$mnemonic]] <- private$s2read_to_ts(series_obj)
@@ -389,12 +387,15 @@ MA_S2Api$set("public", "release", function(project_id,
 
 MA_S2Api$set("public", "push", function(project_id, 
                                         scenario_id, 
-                                        variables = character()) {
+                                        variables = character(),
+                                        note = "") {
   stopifnot(is.character(project_id),length(project_id) == 1)
   stopifnot(is.character(scenario_id),length(scenario_id) == 1)
   stopifnot(is.character(variables))
   url <- paste0("/project/",project_id,"/scenario/",scenario_id,"/series/commit")
-  pl <- lapply(variables, toupper)
+  pl <- list()
+  pl$note <- note
+  pl$variables <- lapply(variables, toupper)
   ret <- self$request(method="post",url=url,payload=pl)  
   return(ret)
 })
