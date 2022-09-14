@@ -80,9 +80,9 @@ MA_Api <- R6Class("MA_Api",
         if (method == "get") {
           req <- httr::GET(fullurl,httr::add_headers(headers))
         } else if (method == "post") {
-          req <- httr::POST(fullurl,httr::add_headers(headers),body=payload,encode = "json")
+          req <- httr::POST(fullurl,httr::add_headers(headers),body=toJSON(payload,auto_unbox=TRUE,null="null"),encode = "raw")
         } else if (method == "put") {
-          req <- httr::PUT(fullurl,httr::add_headers(headers),body=payload,encode = "json")
+          req <- httr::PUT(fullurl,httr::add_headers(headers),body=toJSON(payload,auto_unbox=TRUE,null="null"),encode = "raw")
         } else {
           stop("invalid http method")
         }
@@ -462,7 +462,8 @@ MA_S2Api$set("public", "write_series_data", function(project_id,
 MA_S2Api$set("public", "edit_project_settings", function(project_id, 
                                                          edit_identities = NULL,
                                                          require_comments = NULL,
-                                                         edit_equations = NULL) {
+                                                         edit_equations = NULL,
+                                                         databuffet_alias = NULL) {
   stopifnot(is.character(project_id),length(project_id) == 1)
   pl <- self$get_project_info(project_id)
   if (!is.null(edit_identities)) {
@@ -476,6 +477,10 @@ MA_S2Api$set("public", "edit_project_settings", function(project_id,
   if (!is.null(edit_equations)) {
     stopifnot(is.logical(edit_equations), length(edit_equations) == 1)
     pl$allowEquationsEditing <- edit_equations
+  } 
+  if (!is.null(databuffet_alias)) {
+    stopifnot(is.character(databuffet_alias), length(databuffet_alias) == 1)
+    pl$alias <- paste0("S2PRJ_",toupper(databuffet_alias))
   } 
   url <- paste0("/project/",project_id,"/settings")
   ret <- self$request(method ="put",url=url,payload=pl)
@@ -641,5 +646,16 @@ MA_S2Api$set("public", "clear_add_factors", function(project_id,
   url <- paste0("/project/",project_id,"/scenario/",scenario_id,"/data-series/add-factor/local")
   pl <- lapply(variables, function(v){paste0(toupper(v),"_A")})
   ret <- self$request(method="put",url=url,payload=pl)  
+  return(ret)
+})
+
+MA_S2Api$set("public", "get_variable_info", function(project_id,
+                                                     scenario_id,
+                                                     variable) {
+  stopifnot(is.character(project_id),length(project_id) == 1)
+  stopifnot(is.character(scenario_id),length(scenario_id) == 1)
+  stopifnot(is.character(variable),length(variable) == 1)
+  url <- paste0("/project/",project_id,"/scenario/",scenario_id,"/",toupper(variable))
+  ret <- self$request(method="get",url=url)  
   return(ret)
 })
