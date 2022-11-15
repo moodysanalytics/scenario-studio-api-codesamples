@@ -463,7 +463,10 @@ MA_S2Api$set("public", "edit_project_settings", function(project_id,
                                                          edit_identities = NULL,
                                                          require_comments = NULL,
                                                          edit_equations = NULL,
-                                                         databuffet_alias = NULL) {
+                                                         databuffet_alias = NULL,
+                                                         allow_custom_variables = NULL,
+                                                         edit_history = NULL,
+                                                         edit_lasthist = NULL) {
   stopifnot(is.character(project_id),length(project_id) == 1)
   pl <- self$get_project_info(project_id)
   if (!is.null(edit_identities)) {
@@ -476,7 +479,19 @@ MA_S2Api$set("public", "edit_project_settings", function(project_id,
   }
   if (!is.null(edit_equations)) {
     stopifnot(is.logical(edit_equations), length(edit_equations) == 1)
-    pl$allowEquationsEditing <- edit_equations
+    pl$allowEquationEditing <- edit_equations
+  } 
+  if (!is.null(allow_custom_variables)) {
+    stopifnot(is.logical(allow_custom_variables), length(allow_custom_variables) == 1)
+    pl$allowCustomSeries <- allow_custom_variables
+  } 
+  if (!is.null(edit_history)) {
+    stopifnot(is.logical(edit_history), length(edit_history) == 1)
+    pl$allowHistoryEditing <- edit_history
+  } 
+  if (!is.null(edit_lasthist)) {
+    stopifnot(is.logical(edit_lasthist), length(edit_lasthist) == 1)
+    pl$allowLastHistoryChange <- edit_lasthist
   } 
   if (!is.null(databuffet_alias)) {
     stopifnot(is.character(databuffet_alias), length(databuffet_alias) == 1)
