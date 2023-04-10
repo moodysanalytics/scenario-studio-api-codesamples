@@ -94,6 +94,7 @@ class BaseAPI:
                     ret = response
             else:
                 print(f'Error - Status : {status}, Msg : {response}')
+                print(f'   URL: {url}')
             if self._debug:
                 print(f'{status} : {url}')
         return ret
@@ -115,6 +116,17 @@ class ScenarioStudioAPI(BaseAPI):
 
     def get_project_list(self):
         url = f'{self._base_uri}/project'
+        ret = self.request(url=url,method="get")
+        return ret
+    
+    def search_projects(self,tags:list=None,terms:list=None):
+        url = f'{self._base_uri}/project/search?options.sortBy=-created'
+        if tags is not None:
+            for tag in tags:
+                url = f'{url}&options.tags={tag}'
+        if terms is not None:
+            for term in terms:
+                url = f'{url}&options.terms={term}'
         ret = self.request(url=url,method="get")
         return ret
     
@@ -221,6 +233,12 @@ class ScenarioStudioAPI(BaseAPI):
         ret = self.request(url=url,method="post",payload=pl)
         return ret
     
+    def add_read_only_scenario(self, project_id: str, scenario_id: str, alias: str):
+        url = f'{self._base_uri}/project/{project_id}/scenario/copy'
+        pl = {'alias':alias,'id':scenario_id}
+        ret = self.request(url=url,method="post",payload=pl)
+        return ret
+    
     def order_status(self, project_id:str, orderId:str, build:bool=False):
         url = f'{self._base_uri}/project/{project_id}/order/{orderId}'
         if build:
@@ -248,7 +266,8 @@ class ScenarioStudioAPI(BaseAPI):
                     series[abs(series) > 1.7e+38] = None
                     if dates is not None:
                         series = series.reindex(dates)
-                    series.last_hist = pd.Period(series_obj['lastHistory'],pandas_freq)
+                    if series_obj['lastHistory'] != "N/A":
+                        series.last_hist = pd.Period(series_obj['lastHistory'],pandas_freq)
                     series.description = series_obj['description']
                     series.geo = series_obj['geoCode']
                     ret[series_obj['mnemonic']] = series
