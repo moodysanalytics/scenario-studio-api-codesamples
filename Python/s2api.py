@@ -421,7 +421,7 @@ class ScenarioStudioAPI(BaseAPI):
 
     def edit_equation(self,project_id:str, scenario_id:str, variable:str, equation:str):
         url = f'{self._base_uri}/project/{project_id}/scenario/{scenario_id}/series/{variable}/equation'
-        pl = "'"+urllib.parse.quote(equation)+"'"
+        pl = "'"+urllib.parse.quote(equation.upper())+"'"
         ret = self.request(url=url,method="put",payload=pl)
         return ret
 
@@ -444,7 +444,7 @@ class ScenarioStudioAPI(BaseAPI):
             pl['lastHistorical'] = (data.index[-1]-pd.Period('1849-12-31',data.index.freq)).n
         else:
             pl['lastHistorical'] = last_hist
-        pl['equation'] = equation
+        pl['equation'] = equation.upper()
         pl['data'] = [x for x in data]
         pl['addFactorType'] = add_factor_type
         pl['variableType'] = variable_type
