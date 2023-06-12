@@ -420,7 +420,7 @@ Claim status is a bitwise argument in series search. Add codes together to combi
 
 # Support
 
-Please contact the Scenario Studio API team at Moody's Analytics by email at [help@economy.com](mailto:help@economy.com), with a subject line of "Scenario Studio API technical inquiry"
+Please contact the Scenario Studio API team at Moody's Analytics by email at [helpeconomy@moodys.com](mailto:helpeconomy@moodys.com), with a subject line of "Scenario Studio API technical inquiry"
 
 ## About Moody’s Analytics
 
