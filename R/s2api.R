@@ -130,6 +130,26 @@ MA_S2Api$set("public", "get_project_list", function() {
   return(ret)
 })
 
+MA_S2Api$set("public", "search_projects", function(tags=NULL,
+                                                   terms=NULL,
+                                                   take=100) {
+  stopifnot(is.list(tags) || is.null(tags))
+  stopifnot(is.list(terms) || is.null(terms))
+  url <- paste0("/project/search?options.sortBy=-created&take=",take)
+  if (!is.null(tags)){
+    for (tag in tags) {
+      url <- paste0(url,"&options.tags=",tag)
+    }
+  }
+  if (!is.null(terms)){
+    for (term in terms) {
+      url <- paste0(url,"&options.terms=",term)
+    }
+  }
+  ret <- self$request(method="get",url=url)
+  return(ret)
+})
+
 MA_S2Api$set("public", "get_project_info", function(project_id) {
   stopifnot(is.character(project_id),length(project_id) == 1)
   url <- paste0("/project/",project_id)
@@ -185,7 +205,7 @@ MA_S2Api$set("public", "build_project", function(project_id) {
 MA_S2Api$set("public", "get_base_scenario_list", function(model_types=list(),
                                                           terms=list(), 
                                                           vintages=list(), 
-                                                          sortby="") {
+                                                          sortby="-created") {
   stopifnot(is.list(model_types))
   stopifnot(is.list(terms))
   stopifnot(is.list(vintages))
@@ -273,6 +293,21 @@ MA_S2Api$set("public", "clone_scenario", function(project_id,
   return(ret)
 })
 
+MA_S2Api$set("public", "add_read_only_scenario", function(project_id,
+                                                          scenario_id,
+                                                          alias){
+  stopifnot(is.character(project_id),length(project_id) == 1)
+  stopifnot(is.character(scenario_id),length(scenario_id) == 1)
+  stopifnot(is.character(alias),length(alias) == 1)
+  url = paste0("/project/",project_id,"/scenario/copy")
+  pl <- list(
+    alias = alias,
+    id = scenario_id
+  )
+  ret <- self$request(method="post",url=url,payload=pl)  
+  return(ret)
+})
+
 MA_S2Api$set("public", "get_order_status", function(project_id, 
                                                     order_id, 
                                                     build = FALSE) {
@@ -309,13 +344,15 @@ MA_S2Api$set("private", "s2read_to_ts", function(s2_series){
 })
 
 MA_S2Api$set("public", "get_series_data", function(project_id, 
-                                                   series_list = character(), 
+                                                   series_list = character(),
+                                                   transformation = 0,
                                                    freq = 172, 
                                                    batch = 100, 
                                                    dates = NULL) {
   stopifnot(is.character(project_id),length(project_id) == 1)
   stopifnot(is.character(series_list))
-  url <- paste0("/project/",project_id,"/data-series?freq=",freq)
+  url <- paste0("/project/",project_id,"/data-series?freq=",freq,"&transformation=",transformation)
+  
   num_series <- length(series_list)
   ret <- list()
   for (i in 1:ceiling(num_series / batch)) {
@@ -672,5 +709,45 @@ MA_S2Api$set("public", "get_variable_info", function(project_id,
   stopifnot(is.character(variable),length(variable) == 1)
   url <- paste0("/project/",project_id,"/scenario/",scenario_id,"/",toupper(variable))
   ret <- self$request(method="get",url=url)  
+  return(ret)
+})
+
+MA_S2Api$set("public", "add_custom_variable", function(project_id,
+                                                       scenario_id,
+                                                       variable,
+                                                       data, 
+                                                       variable_type=0,
+                                                       equation=NULL,
+                                                       observed="AVERAGED",
+                                                       last_hist=NULL,
+                                                       title="",
+                                                       units="",
+                                                       source="",
+                                                       add_factor_type=2){
+  stopifnot(is.character(project_id),length(project_id) == 1)
+  stopifnot(is.character(scenario_id),length(scenario_id) == 1)
+  stopifnot(is.character(variable),length(variable) == 1)
+  stopifnot(is.ts(data))
+  pl <- list()
+  pl$variable <- toupper(variable)
+  pl$observedAttribute <- toupper(observed)
+  pl$title <- title
+  pl$units <- units
+  pl$source <- source
+  if (!is.null(equation)) {
+    pl$equation = toupper(equation)
+  }
+  s2data <- private$ts_to_s2write(data)
+  pl$startDate <- s2data$startDate
+  pl$data <- s2data$data
+  if (is.null(last_hist)) {
+    pl$lastHistorical <- s2data$startDate + length(s2data$data) - 1
+  } else {
+    pl$lastHistorical <- last_hist
+  }
+  pl$addFactorType <- add_factor_type
+  pl$variableType <- variable_type
+  url <- paste0("/project/",project_id,"/scenario/",scenario_id,"/series/custom")
+  ret <- self$request(method="post",url=url,payload=list(pl))
   return(ret)
 })

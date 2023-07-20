@@ -455,3 +455,9 @@ class ScenarioStudioAPI(BaseAPI):
         url = f'{self._base_uri}/project/{project_id}/scenario/{scenario_id}/series/{variable}/historical/{lasthist}'
         ret = self.request(url=url,method="put")
         return ret
+    
+    def import_from_scenario(self, project_id:str, scenario_id_to:str, scenario_id_from:str, claim:bool=True):
+        url = f'{self._base_uri}/project/{project_id}/scenario/{scenario_id_to}/transfer-series/order'
+        pl = {'sourceScenarioId':scenario_id_from, 'claim':claim}
+        ret = [self.request(url=url,method="post",payload=pl)]
+        return ret
