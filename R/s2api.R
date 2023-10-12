@@ -692,7 +692,7 @@ MA_S2Api$set("public", "edit_equation", function(project_id,
   variable <- toupper(variable)
   equation <- toupper(equation)
   url <- paste0("/project/",project_id,"/scenario/",scenario_id,"/series/",variable,"/equation")
-  pl <- paste("'",URLencode(equation, reserved = FALSE),"'")
+  pl <- paste("'",URLencode(equation, reserved = TRUE),"'")
   ret <- self$request(method = "put", url = url, payload = pl)  
   return(ret)
 })
