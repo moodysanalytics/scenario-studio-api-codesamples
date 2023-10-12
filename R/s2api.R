@@ -80,9 +80,17 @@ MA_Api <- R6Class("MA_Api",
         if (method == "get") {
           req <- httr::GET(fullurl,httr::add_headers(headers))
         } else if (method == "post") {
-          req <- httr::POST(fullurl,httr::add_headers(headers),body=toJSON(payload,auto_unbox=TRUE,null="null"),encode = "raw")
+          if (is.character(payload) && length(payload) ==1) {
+            req <- httr::POST(fullurl,httr::add_headers(headers),body=payload,encode = "raw")
+          } else {
+            req <- httr::POST(fullurl,httr::add_headers(headers),body=toJSON(payload,auto_unbox=TRUE,null="null",digits=NA),encode = "raw")
+          }
         } else if (method == "put") {
-          req <- httr::PUT(fullurl,httr::add_headers(headers),body=toJSON(payload,auto_unbox=TRUE,null="null"),encode = "raw")
+          if (is.character(payload) && length(payload) ==1) {
+            req <- httr::PUT(fullurl,httr::add_headers(headers),body=payload,encode = "raw")
+          } else {
+            req <- httr::PUT(fullurl,httr::add_headers(headers),body=toJSON(payload,auto_unbox=TRUE,null="null",digits=NA),encode = "raw")
+          }
         } else {
           stop("invalid http method")
         }
@@ -685,7 +693,7 @@ MA_S2Api$set("public", "edit_equation", function(project_id,
   equation <- toupper(equation)
   url <- paste0("/project/",project_id,"/scenario/",scenario_id,"/series/",variable,"/equation")
   pl <- paste("'",URLencode(equation, reserved = FALSE),"'")
-  ret <- self$request(method = "post", url = url, payload = pl)  
+  ret <- self$request(method = "put", url = url, payload = pl)  
   return(ret)
 })
 

@@ -233,9 +233,14 @@ class ScenarioStudioAPI(BaseAPI):
         ret = self.request(url=url,method="post",payload=pl)
         return ret
     
-    def add_read_only_scenario(self, project_id: str, scenario_id: str, alias: str):
+    def add_read_only_scenario(self, project_id: str, scenario_id:str, alias:str, title:str = None):
         url = f'{self._base_uri}/project/{project_id}/scenario/copy'
         pl = {'alias':alias,'id':scenario_id}
+        if title is None:
+            bsi = self.get_base_scenario_info(scenario_id)
+            pl['title'] = bsi['title']
+        else:
+            pl['title'] = title
         ret = self.request(url=url,method="post",payload=pl)
         return ret
     
@@ -408,9 +413,9 @@ class ScenarioStudioAPI(BaseAPI):
         url = f'{self._base_uri}/project/{project_id}/contributor/{role}'
         pl = []
         for email in emails:
-            sids = [x['sid'] for x in users if email.lower() == x['email'].lower()]
+            sids = [x for x in users if email.lower() == x['email'].lower()]
             if len(sids) > 0:
-                pl.append({'sid':sids[0], 'role':role})
+                pl.append({'sid':sids[0]['sid'], 'firstName':sids[0]['firstName'], 'lastName':sids[0]['lastName'], 'email':sids[0]['email'], 'role':role})
         ret = self.request(url=url,method="put",payload=pl)
         return ret
 
