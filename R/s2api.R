@@ -79,6 +79,8 @@ MA_Api <- R6Class("MA_Api",
         headers[["Accept"]] <- "application/json"
         if (method == "get") {
           req <- httr::GET(fullurl,httr::add_headers(headers))
+        } else if (method == "delete") {
+          req <- httr::DELETE(fullurl,httr::add_headers(headers))
         } else if (method == "post") {
           if (is.character(payload) && length(payload) ==1) {
             req <- httr::POST(fullurl,httr::add_headers(headers),body=payload,encode = "raw")
@@ -492,14 +494,17 @@ MA_S2Api$set("private", "ts_to_s2write", function(ts_series){
 MA_S2Api$set("public", "write_series_data", function(project_id,
                                              scenario_id,
                                              variable,
-                                             data) {
+                                             data,
+                                             edit_history=FALSE) {
   stopifnot(is.character(project_id),length(project_id) == 1)
   stopifnot(is.character(scenario_id),length(scenario_id) == 1)
   stopifnot(is.character(variable),length(variable) == 1)
   stopifnot(is.ts(data))
+  stopifnot(is.logical(edit_history),length(edit_history) == 1)
   variable <- toupper(variable)
   url <- paste0("/project/",project_id,"/scenario/",scenario_id,"/data-series/",variable,"/data/local")
   pl <- private$ts_to_s2write(data)
+  pl$historyModified <- edit_history
   ret <- self$request(method="put",url=url, payload=pl)  
   return(ret)
 })
@@ -646,6 +651,29 @@ MA_S2Api$set("public", "sharedown_solve", function(project_id,
   return(ret)
 })
 
+MA_S2Api$set("public", "get_audits", function(project_id,
+                                              scenario_ids=NULL,
+                                              actions=NULL) {
+  stopifnot(is.character(project_id),length(project_id) == 1)
+  params <- c()
+  if (!is.null(scenario_ids)) {
+    for (scenario_id in scenario_ids) {
+      params <- append(params,paste0("options.scenarios=",scenario_id))
+    }
+  }
+  if (!is.null(actions)) {
+    for (action in actions) {
+      params <- append(params,paste0("options.actions=",action))
+    }
+  }
+  url <- paste0("/audit/project/",project_id)
+  if (length(params) > 0){
+    url <- paste0(url,"?",paste(params,collapse='&'))
+  }
+  ret <- self$request(method = "get", url = url)  
+  return(ret)
+})
+
 MA_S2Api$set("public", "get_pushed_series", function(project_id,
                                                       scenario_id) {
   stopifnot(is.character(project_id),length(project_id) == 1)
@@ -757,5 +785,20 @@ MA_S2Api$set("public", "add_custom_variable", function(project_id,
   pl$variableType <- variable_type
   url <- paste0("/project/",project_id,"/scenario/",scenario_id,"/series/custom")
   ret <- self$request(method="post",url=url,payload=list(pl))
+  return(ret)
+})
+
+MA_S2Api$set("public", "remove_scenario", function(project_id, scenario_alias) {
+  stopifnot(is.character(project_id),length(project_id) == 1)
+  stopifnot(is.character(scenario_alias),length(scenario_alias) == 1)
+  url <- paste0("/project/",project_id,"/scenario/alias/",scenario_alias)
+  ret <- self$request(method="delete",url=url)
+  return(ret)
+})
+
+MA_S2Api$set("public", "delete_project", function(project_id) {
+  stopifnot(is.character(project_id),length(project_id) == 1)
+  url <- paste0("/project/",project_id)
+  ret <- self$request(method="delete",url=url)
   return(ret)
 })
