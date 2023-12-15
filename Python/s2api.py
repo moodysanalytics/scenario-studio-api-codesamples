@@ -64,6 +64,8 @@ class BaseAPI:
             head['Accept'] = 'application/json'
             if method.lower().strip() == "get":
                 r = requests.get(url=url,headers=head,proxies=self._proxies)
+            elif method.lower().strip() == "delete":
+                r = requests.delete(url=url,headers=head,proxies=self._proxies)
             elif method.lower().strip() == "post": 
                 if type(payload) is list or type(payload) is dict:
                     r = requests.post(url=url,headers=head,json=payload,proxies=self._proxies)
@@ -292,7 +294,7 @@ class ScenarioStudioAPI(BaseAPI):
 
     def claim(self, project_id:str, scenario_id:str, variables:list, exogenize:bool=False):
         url = f'{self._base_uri}/project/{project_id}/scenario/{scenario_id}/series/checkout?exogenize={exogenize}'
-        pl = [x.upper() for x in variables]
+        pl = [x.upper().strip() for x in variables]
         ret = self.request(url=url,method="post",payload=pl)
         return ret
     
@@ -303,13 +305,13 @@ class ScenarioStudioAPI(BaseAPI):
 
     def release(self, project_id:str, scenario_id:str, variables:list):
         url = f'{self._base_uri}/project/{project_id}/scenario/{scenario_id}/series/checkin'
-        pl = [x.upper() for x in variables]
+        pl = [x.upper().strip() for x in variables]
         ret = self.request(url=url,method="post",payload=pl)
         return ret
 
     def push(self, project_id:str, scenario_id:str, variables:list, note:str=None):
         url = f'{self._base_uri}/project/{project_id}/scenario/{scenario_id}/series/commit'
-        pl = {'variables': [x.upper() for x in variables]}
+        pl = {'variables': [x.upper().strip() for x in variables]}
         if note is not None:
             pl['note'] = note
         ret = self.request(url=url,method="post",payload=pl)
@@ -317,27 +319,28 @@ class ScenarioStudioAPI(BaseAPI):
 
     def endogenize(self, project_id:str, scenario_id:str, variables:list):
         url = f'{self._base_uri}/project/{project_id}/scenario/{scenario_id}/series/endogenizeBulk'
-        pl = [x.upper() for x in variables]
+        pl = [x.upper().strip() for x in variables]
         ret = self.request(url=url,method="put",payload=pl)
         return ret
 
     def exogenize(self, project_id:str, scenario_id:str, variables:list):
         url = f'{self._base_uri}/project/{project_id}/scenario/{scenario_id}/series/exogenize'
-        pl = [x.upper() for x in variables]
+        pl = [x.upper().strip() for x in variables]
         ret = self.request(url=url,method="put",payload=pl)
         return ret
 
     def exogenize_through(self, project_id:str, scenario_id:str, variables:list, date:int):
         url = f'{self._base_uri}/project/{project_id}/scenario/{scenario_id}/series/exogenize-through'
-        pl = {'variables': [x.upper() for x in variables], 'exogenizeThrough': date}
+        pl = {'variables': [x.upper().strip() for x in variables], 'exogenizeThrough': date}
         ret = self.request(url=url,method="put",payload=pl)
         return ret
 
-    def write_series_data(self, project_id:str, scenario_id:str, variable:str, data):
+    def write_series_data(self, project_id:str, scenario_id:str, variable:str, data, edit_history:bool=False):
         url = f'{self._base_uri}/project/{project_id}/scenario/{scenario_id}/data-series/{variable.upper()}/data/local'
         pl = {}
         pl['startDate'] = (data.index[0]-pd.Period('1849-12-31',data.index.freq)).n
         pl['data'] = [x for x in data]
+        pl['historyModified'] = edit_history
         ret = self.request(url=url,method="put",payload=pl)
         return ret
 
@@ -403,6 +406,18 @@ class ScenarioStudioAPI(BaseAPI):
         ret = [self.request(url=url,method="post")]
         return ret
 
+    def get_audits(self, project_id:str, scenario_ids:list=[],actions:list=[]):
+        url = f'{self._base_uri}/audit/project/{project_id}'
+        params = []
+        for scenario_id in scenario_ids:
+            params.append(f'options.scenarios={scenario_id}')
+        for action in actions:
+            params.append(f'options.actions={action}')
+        if len(params) > 0:
+            url = f'{url}?{"&".join(params)}'
+        ret = self.request(url=url,method="get")
+        return ret
+
     def get_pushed_series(self, project_id:str, scenario_id:str):
         url = f'{self._base_uri}/audit/project/{project_id}?options.actions=4&options.scenarios={scenario_id}'
         ret = self.request(url=url,method="get")
@@ -432,7 +447,7 @@ class ScenarioStudioAPI(BaseAPI):
 
     def clear_add_factors(self, project_id:str, scenario_id:str, variables:list):
         url = f'{self._base_uri}/project/{project_id}/scenario/{scenario_id}/data-series/add-factor/local'
-        pl = [x.upper()+"_A" for x in variables]
+        pl = [x.upper().strip()+"_A" for x in variables]
         ret = self.request(url=url,method="put",payload=pl)
         return ret
 
@@ -466,3 +481,11 @@ class ScenarioStudioAPI(BaseAPI):
         pl = {'sourceScenarioId':scenario_id_from, 'claim':claim}
         ret = [self.request(url=url,method="post",payload=pl)]
         return ret
+    
+    def remove_scenario(self, project_id:str, scenario_alias:str):
+        url = f'{self._base_uri}/project/{project_id}/scenario/alias/{scenario_alias.lower().strip()}'
+        ret = self.request(url=url,method="delete")
+
+    def delete_project(self, project_id:str):
+        url = f'{self._base_uri}/project/{project_id}'
+        ret = self.request(url=url,method="delete")
