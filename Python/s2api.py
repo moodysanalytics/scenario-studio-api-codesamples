@@ -485,7 +485,20 @@ class ScenarioStudioAPI(BaseAPI):
     def remove_scenario(self, project_id:str, scenario_alias:str):
         url = f'{self._base_uri}/project/{project_id}/scenario/alias/{scenario_alias.lower().strip()}'
         ret = self.request(url=url,method="delete")
+        return ret
 
     def delete_project(self, project_id:str):
         url = f'{self._base_uri}/project/{project_id}'
         ret = self.request(url=url,method="delete")
+        return ret
+
+    def get_scenario_checkpoints(self, project_id:str, scenario_id:str):
+        url = f'{self._base_uri}/project/{project_id}/checkpoint/{scenario_id}'
+        ret = self.request(url=url,method="get")
+        return ret
+    
+    def create_checkpoint(self, project_id:str, scenario_id:str, note:str=""):
+        url = f'{self._base_uri}/project/{project_id}/scenario/{scenario_id}/checkpoint'
+        pl = {'note':note}
+        ret = self.request(url=url,method="post",payload=pl)
+        return ret
