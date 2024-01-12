@@ -802,3 +802,24 @@ MA_S2Api$set("public", "delete_project", function(project_id) {
   ret <- self$request(method="delete",url=url)
   return(ret)
 })
+
+MA_S2Api$set("public", "get_scenario_checkpoints", function(project_id, scenario_id) {
+  stopifnot(is.character(project_id),length(project_id) == 1)
+  stopifnot(is.character(scenario_id),length(scenario_id) == 1)
+  url <- paste0("/project/",project_id,'/checkpoint/',scenario_id)
+  ret <- self$request(method="get",url=url)
+  return(ret)
+})
+
+MA_S2Api$set("public", "create_checkpoint", function(project_id,
+                                                     scenario_id,
+                                                     note="") {
+  stopifnot(is.character(project_id),length(project_id) == 1)
+  stopifnot(is.character(scenario_id),length(scenario_id) == 1)
+  stopifnot(is.character(note),length(note) == 1)
+  pl <- list(note = note)
+  url <- paste0("/project/",project_id,'/scenario/',scenario_id,'/checkpoint')
+  ret <- self$request(method="post",url=url,payload=pl)
+  return(ret)
+})
+  
