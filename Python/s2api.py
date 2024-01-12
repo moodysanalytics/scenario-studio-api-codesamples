@@ -277,6 +277,7 @@ class ScenarioStudioAPI(BaseAPI):
                         series.last_hist = pd.Period(series_obj['lastHistory'],pandas_freq)
                     series.description = series_obj['description']
                     series.geo = series_obj['geoCode']
+                    series.observed = series_obj['observedAttribute']
                     ret[series_obj['mnemonic']] = series
         return ret
 
