@@ -361,8 +361,10 @@ class ScenarioStudioAPI(BaseAPI):
         ret = self.request(url=url,method="put",payload=pl)
         return ret
 
-    def edit_scenario_settings(self, project_id:str, scenario_id:str, description:str=None, edit_start:int=None, forecast_end=None):
-        pl = self.get_base_scenario_info(project_id, scenario_id)
+    def edit_scenario_settings(self, project_id:str, scenario_id:str, title:str=None, description:str=None, edit_start:int=None, forecast_end=None):
+        pl = self.get_scenario_info(project_id, scenario_id)
+        if title is not None:
+            pl['title'] = title
         if description is not None:
             pl['description'] = description
         if edit_start is not None:

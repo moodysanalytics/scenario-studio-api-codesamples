@@ -554,15 +554,20 @@ MA_S2Api$set("public", "edit_project_settings", function(project_id,
 
 MA_S2Api$set("public", "edit_scenario_settings", function(project_id,
                                                           scenario_id,
+                                                          title = NULL,
                                                           description = NULL,
                                                           edit_start = NULL,
                                                           forecast_end = NULL) {
   stopifnot(is.character(project_id),length(project_id) == 1)
   stopifnot(is.character(scenario_id),length(scenario_id) == 1)
-  pl <- self$get_base_scenario_info(project_id, scenario_id)
+  pl <- self$get_scenario_info(project_id, scenario_id)
+  if (!is.null(title)) {
+    stopifnot(is.character(title), length(title) == 1)
+    pl$title <- title
+  } 
   if (!is.null(description)) {
     stopifnot(is.character(description), length(description) == 1)
-    pl$descripton <- description
+    pl$description <- description
   } 
   if (!is.null(edit_start)) {
     stopifnot(is.numeric(edit_start),length(edit_start) == 1)
