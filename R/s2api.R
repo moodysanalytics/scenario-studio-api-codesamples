@@ -415,7 +415,7 @@ MA_S2Api$set("public", "claim", function(project_id,
 
 MA_S2Api$set("public", "get_claim_list", function(project_id) {
   stopifnot(is.character(project_id),length(project_id) == 1)
-  url <- paste0("/project/",project_id,"series/checked-out")
+  url <- paste0("/project/",project_id,"/series/checked-out")
   ret <- self$request(method="get",url=url)
   return(ret)
 })
