@@ -280,6 +280,11 @@ class ScenarioStudioAPI(BaseAPI):
                     series.observed = series_obj['observedAttribute']
                     ret[series_obj['mnemonic']] = series
         return ret
+    
+    def get_variable_info(self, project_id:str, scenario_id:str, variable:str):
+        url = f'{self._base_uri}/project/{project_id}/scenario/{scenario_id}/variable/{variable.upper().strip()}'
+        ret = self.request(url=url,method="get")
+        return ret
 
     def wait_for_orders(self, project_id:str, orders:list, build:bool=False, sleep:int=5):
         ret = []
