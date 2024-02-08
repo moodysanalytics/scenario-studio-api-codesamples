@@ -748,7 +748,7 @@ MA_S2Api$set("public", "get_variable_info", function(project_id,
   stopifnot(is.character(project_id),length(project_id) == 1)
   stopifnot(is.character(scenario_id),length(scenario_id) == 1)
   stopifnot(is.character(variable),length(variable) == 1)
-  url <- paste0("/project/",project_id,"/scenario/",scenario_id,"/",toupper(variable))
+  url <- paste0("/project/",project_id,"/scenario/",scenario_id,"/variable/",toupper(variable))
   ret <- self$request(method="get",url=url)  
   return(ret)
 })
