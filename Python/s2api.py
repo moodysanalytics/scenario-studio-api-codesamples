@@ -30,7 +30,7 @@ class BaseAPI:
         url = f'{self._base_uri}/oauth2/token'
         head = {'Content-Type':'application/x-www-form-urlencoded'}
         data = f'client_id={access_key}&client_secret={private_key}&grant_type=client_credentials'
-        r = requests.post(url=url,headers=head,data=data)
+        r = requests.post(url=url,headers=head,data=data,proxies=self._proxies)
         status = r.status_code
         response = r.text
         jobj = json.loads(response)
@@ -115,6 +115,11 @@ class ScenarioStudioAPI(BaseAPI):
         elif freq == 128:
             pandas_freq = 'M'
         return pandas_freq
+    
+    def health(self):
+        url = f'{self._base_uri}/health'
+        ret = self.request(url=url,method="get")
+        return ret
 
     def get_project_list(self):
         url = f'{self._base_uri}/project'
@@ -350,7 +355,7 @@ class ScenarioStudioAPI(BaseAPI):
         ret = self.request(url=url,method="put",payload=pl)
         return ret
 
-    def edit_project_settings(self, project_id:str, edit_identities:bool=None, require_comments:bool=None, edit_equations:bool=None, allow_custom_variables:bool=None, databuffet_alias:str=None):
+    def edit_project_settings(self, project_id:str, edit_identities:bool=None, require_comments:bool=None, edit_equations:bool=None, allow_custom_variables:bool=None, databuffet_alias:str=None, edit_history:bool=None, edit_lasthist:bool=None):
         pl = self.get_project_info(project_id)
         url = f'{self._base_uri}/project/{project_id}/settings'
         if edit_identities is not None:
@@ -361,6 +366,10 @@ class ScenarioStudioAPI(BaseAPI):
             pl['allowEquationEditing'] = edit_equations
         if allow_custom_variables is not None:
             pl['allowCustomSeries'] = allow_custom_variables
+        if edit_history is not None:
+            pl['allowHistoryEditing'] = edit_history
+        if edit_lasthist is not None:
+            pl['allowLastHistoryChange'] = edit_lasthist
         if databuffet_alias is not None:
             pl['alias'] = f'S2PRJ_{databuffet_alias}'
         ret = self.request(url=url,method="put",payload=pl)
