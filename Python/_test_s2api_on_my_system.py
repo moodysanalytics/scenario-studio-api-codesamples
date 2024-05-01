@@ -7,6 +7,8 @@ except Exception as ex:
     print('Make sure s2api.py is downloaded to the same directory as this program, and run again')
     print('Get it here: https://github.com/moodysanalytics/scenario-studio-api-codesamples/blob/master/Python/s2api.py')
     sys.exit()
+import pandas as pd
+import numpy as np
 
 def prompt(prompt_text:str):
     ret = None
