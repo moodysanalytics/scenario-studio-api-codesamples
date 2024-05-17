@@ -324,3 +324,5 @@ local.properties
 
 # Pycharm
 venv/
+
+.vscode

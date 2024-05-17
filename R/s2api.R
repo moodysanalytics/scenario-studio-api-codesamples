@@ -297,6 +297,7 @@ MA_S2Api$set("public", "clone_scenario", function(project_id,
   if (!is.null(forecast_end)) {
     stopifnot(is.numeric(forecast_end),length(forecast_end) == 1)
     pl$forecastEnd <- as.integer(forecast_end)
+    pl$truncate <- TRUE
   }
   url <- paste0("/project/",project_id,"/scenario/clone")
   ret <- self$request(method="post",url=url,payload=pl)  
@@ -484,9 +485,11 @@ MA_S2Api$set("private", "ts_to_s2write", function(ts_series){
   } else {
     stop("Invalid Frequency")
   }
+  data_array <- unclass(ts_series)
+  data_array[is.na(data_array)] <- -3.4028234663852886E+38
   s2_series <- list(
     startDate = start,
-    data = unclass(ts_series)
+    data = data_array
   )
   return(s2_series)
 })

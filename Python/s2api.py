@@ -219,6 +219,12 @@ class ScenarioStudioAPI(BaseAPI):
             url = f'{self._base_uri}/project/{project_id}/scenario/{id}/solve/central'
             ret.append(self.request(url=url,method="post"))
         return ret
+    
+    def add_factor_solve(self, project_id:str, scenario_id:str, variables:list):
+        url = f'{self._base_uri}/project/{project_id}/scenario/{scenario_id}/series/reendogenize'
+        pl = variables
+        ret = [self.request(url=url,method="post",payload=pl)]
+        return ret
 
     def get_base_scenario_info(self, scenario_id:str):
         url = f'{self._base_uri}/base-scenario/{scenario_id}'
@@ -237,6 +243,7 @@ class ScenarioStudioAPI(BaseAPI):
             pl['editStart'] = edit_start
         if forecast_end is not None:
             pl['forecastEnd'] = forecast_end
+            pl['truncate'] = True
         ret = self.request(url=url,method="post",payload=pl)
         return ret
     
@@ -350,7 +357,7 @@ class ScenarioStudioAPI(BaseAPI):
         url = f'{self._base_uri}/project/{project_id}/scenario/{scenario_id}/data-series/{variable.upper()}/data/local'
         pl = {}
         pl['startDate'] = (data.index[0]-pd.Period('1849-12-31',data.index.freq)).n
-        pl['data'] = [x for x in data]
+        pl['data'] = [-3.4028234663852886E+38 if x is None or pd.isna(x) else x for x in data]
         pl['historyModified'] = edit_history
         ret = self.request(url=url,method="put",payload=pl)
         return ret
@@ -519,3 +526,19 @@ class ScenarioStudioAPI(BaseAPI):
         pl = {'note':note}
         ret = self.request(url=url,method="post",payload=pl)
         return ret
+    
+    def reendogenize_scenario(self, scenario_id:str, push:bool=False):
+        project_id = self.get_base_scenario_info(scenario_id)['projectOwner']
+        variables = self.search_series(project_id,[scenario_id],state=6)
+        mnemonics = [x['variableId'] for x in variables]
+        if len(mnemonics) > 0:
+            self.claim(project_id,scenario_id,mnemonics)
+            order = self.add_factor_solve(project_id,scenario_id,mnemonics)
+            output = self.wait_for_orders(project_id,order)[0]['message']
+            if output.lower().strip() == 'success':
+                if push:
+                    self.push(project_id,scenario_id,mnemonics,note='Reendogenize scenario')
+            else:
+                print('Add factor solve failed')
+        else:
+            print('No variables to reendogenize')
