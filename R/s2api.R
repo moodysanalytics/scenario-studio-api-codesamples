@@ -472,6 +472,22 @@ MA_S2Api$set("public", "exogenize", function(project_id,
   return(ret)
 })
 
+MA_S2Api$set("public", "exogenize_through", function(project_id,
+                                             scenario_id,
+                                             variables = character(),
+                                             date) {
+  stopifnot(is.character(project_id),length(project_id) == 1)
+  stopifnot(is.character(scenario_id),length(scenario_id) == 1)
+  stopifnot(is.character(variables))
+  stopifnot(is.numeric(date))
+  url <- paste0("/project/",project_id,"/scenario/",scenario_id,"/series/exogenize-through")
+  pl <- list()
+  pl$variables <- lapply(variables, toupper)
+  pl$exogenizeThrough <- date
+  ret <- self$request(method="put", url=url, payload=pl)  
+  return(ret)
+})
+
 MA_S2Api$set("private", "ts_to_s2write", function(ts_series){
   tsp <- attr(ts_series, "tsp")
   prds <- tsp[3]
