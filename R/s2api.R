@@ -846,4 +846,13 @@ MA_S2Api$set("public", "create_checkpoint", function(project_id,
   ret <- self$request(method="post",url=url,payload=pl)
   return(ret)
 })
-  
+
+MA_S2Api$set("public", "create_checkpoint", function(project_id, scenario_id, note="") {
+  stopifnot(is.character(project_id),length(project_id) == 1)
+  stopifnot(is.character(scenario_id),length(scenario_id) == 1)
+  pl <- list()
+  pl$note <- note
+  url <- paste0("/project/",project_id,"/scenario/",scenario_id,"/checkpoint")
+  ret <- self$request(method="post",url=url,payload=pl)
+  return(ret)
+})  
