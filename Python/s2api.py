@@ -126,8 +126,8 @@ class ScenarioStudioAPI(BaseAPI):
         ret = self.request(url=url,method="get")
         return ret
     
-    def search_projects(self,tags:list=None,terms:list=None):
-        url = f'{self._base_uri}/project/search?options.sortBy=-created'
+    def project_count(self,tags:list=None,terms:list=None):
+        url = f'{self._base_uri}/project/search/count?options.sortBy=-created'
         if tags is not None:
             for tag in tags:
                 url = f'{url}&options.tags={tag}'
@@ -135,6 +135,21 @@ class ScenarioStudioAPI(BaseAPI):
             for term in terms:
                 url = f'{url}&options.terms={term}'
         ret = self.request(url=url,method="get")
+        return ret
+    
+    def search_projects(self,tags:list=None,terms:list=None):
+        take = self.project_count(tags=tags,terms=terms)
+        if take > 0:
+            url = f'{self._base_uri}/project/search?options.sortBy=-created&take={take}'
+            if tags is not None:
+                for tag in tags:
+                    url = f'{url}&options.tags={tag}'
+            if terms is not None:
+                for term in terms:
+                    url = f'{url}&options.terms={term}'
+            ret = self.request(url=url,method="get")
+        else:
+            ret = []
         return ret
     
     def get_project_info(self, project_id:str):
@@ -396,7 +411,7 @@ class ScenarioStudioAPI(BaseAPI):
         ret = self.request(url=url,method="put",payload=pl)
         return ret
 
-    def search_series(self, project_id:str, scenario_ids:list=None, geos:list=None, state=None, query:str="", checked_out:int=None, variable_type:list=None, sharedown=None):
+    def search_series(self, project_id:str, scenario_ids:list=None, geos:list=None, state:int=None, local_state:int=None, query:str="", checked_out:int=None, variable_type:list=None, sharedown:bool=None, custom_series:bool=None, history_edits:bool=None, equation_edits:bool=None):
         pl = {}
         pl['query'] = query
         pl['state'] = state
@@ -411,6 +426,14 @@ class ScenarioStudioAPI(BaseAPI):
             pl['geographies'] = geos
         if sharedown is not None:
             pl['sharedown'] = sharedown
+        if custom_series is not None:
+            pl['customSeries'] = custom_series
+        if history_edits is not None:
+            pl['historyEdits'] = history_edits
+        if equation_edits is not None:
+            pl['equationEdits'] = equation_edits
+        if local_state is not None:
+            pl['localState'] = local_state
         url = f'{self._base_uri}/project/{project_id}/search/count'
         count = self.request(url=url,method="post",payload=pl)
         if count > 0:
