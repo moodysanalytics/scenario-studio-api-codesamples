@@ -4,7 +4,7 @@ Library for executing commands via Scenario Studio v2 API
 https://api.economy.com/scenario-studio/v2/swagger/ui/index
 """
 
-import os
+import sys
 import json
 import datetime
 import hmac
@@ -498,7 +498,7 @@ class ScenarioStudioAPI(BaseAPI):
         ret = self.request(url=url,method="put",payload=pl)
         return ret
 
-    def add_custom_variable(self, project_id:str, scenario_id:str, variable:str, data, variable_type:int=0, equation:str=None, observed:str="AVERAGED", last_hist:int=None, title:str="", units:str="", source:str="", add_factor_type:int=2):
+    def add_custom_variable(self, project_id:str, scenario_id:str, variable:str, data, variable_type:int=0, equation:str=None, observed:str="AVERAGED", last_hist=None, title:str="", units:str="", source:str="", add_factor_type:int=2):
         url = f'{self._base_uri}/project/{project_id}/scenario/{scenario_id}/series/custom'
         pl = {}
         pl['variable'] = variable
@@ -506,13 +506,13 @@ class ScenarioStudioAPI(BaseAPI):
         pl['title'] = title
         pl['units'] = units
         pl['source'] = source
-        pl['startDate'] = (data.index[0]-pd.Period('1849-12-31',data.index.freq)).n
+        pl['startDate'] = self.date_int(data.index[0])
         if last_hist is None:
-            pl['lastHistorical'] = (data.index[-1]-pd.Period('1849-12-31',data.index.freq)).n
+            pl['lastHistorical'] = self.date_int(data.index[data.notna()][-1])
         else:
-            pl['lastHistorical'] = last_hist
+            pl['lastHistorical'] = self.date_int(last_hist)
         pl['equation'] = equation.upper()
-        pl['data'] = [x for x in data]
+        pl['data'] = [-3.4028234663852886E+38 if x is None or pd.isna(x) else x for x in data]
         pl['addFactorType'] = add_factor_type
         pl['variableType'] = variable_type
         ret = self.request(url=url,method="post",payload=[pl])
@@ -565,3 +565,11 @@ class ScenarioStudioAPI(BaseAPI):
                 print('Add factor solve failed')
         else:
             print('No variables to reendogenize')
+
+    def date_int(self,d):
+        if type(d) is pd.Period:
+            return (d - pd.Period('1849-12-31',d.freq)).n
+        elif type(d) is int:
+            return d
+        else:
+            raise Exception('date_to_int only accepts pd.Period or int types')
