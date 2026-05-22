@@ -105,6 +105,7 @@ class ScenarioStudioAPI(BaseAPI):
     def __init__(self,acc_key:str,enc_key:str,oauth:bool = True,proxies={},debug:bool=False):
         super().__init__(acc_key,enc_key,oauth,proxies,debug)
         self._base_uri = 'https://api.economy.com/scenario-studio/v2'
+        self.user_universe = {}
 
     def get_pandas_freq(self, freq:int):
         pandas_freq = 'Q-DEC'
@@ -126,7 +127,7 @@ class ScenarioStudioAPI(BaseAPI):
         ret = self.request(url=url,method="get")
         return ret
     
-    def project_count(self,tags:list=None,terms:list=None):
+    def project_count(self,tags:list=None,terms:list=None,roles:list=None):
         url = f'{self._base_uri}/project/search/count?options.sortBy=-created'
         if tags is not None:
             for tag in tags:
@@ -134,22 +135,29 @@ class ScenarioStudioAPI(BaseAPI):
         if terms is not None:
             for term in terms:
                 url = f'{url}&options.terms={term}'
+        if roles is not None:
+            for role in roles:
+                url = f'{url}&options.roles={role}'
         ret = self.request(url=url,method="get")
         return ret
     
-    def search_projects(self,tags:list=None,terms:list=None):
-        take = self.project_count(tags=tags,terms=terms)
-        if take > 0:
-            url = f'{self._base_uri}/project/search?options.sortBy=-created&take={take}'
+    def search_projects(self,tags:list=None,terms:list=None,roles:list=None,sort='-created'):
+        total = self.project_count(tags=tags,terms=terms,roles=roles)
+        take = 50
+        ret = []
+        if total > 0:
+            url = f'{self._base_uri}/project/search?options.sortBy={sort}&take={take}'
             if tags is not None:
                 for tag in tags:
                     url = f'{url}&options.tags={tag}'
             if terms is not None:
                 for term in terms:
                     url = f'{url}&options.terms={term}'
-            ret = self.request(url=url,method="get")
-        else:
-            ret = []
+            if roles is not None:
+                for role in roles:
+                    url = f'{url}&options.roles={role}'
+            for skip in range(0,total,take):
+                ret.extend(self.request(url=f'{url}&skip={skip}',method="get"))
         return ret
     
     def get_project_info(self, project_id:str):
@@ -178,10 +186,12 @@ class ScenarioStudioAPI(BaseAPI):
         ret = self.request(url=url,method="post",payload=pl)
         return ret
 
-    def build_project(self, project_id:str):
+    def build_project(self, project_id:str, wait:bool=True, sleep:int=5):
         url = f'{self._base_uri}/project/{project_id}/build'
-        ret = self.request(url=url,method="post")
-        return ret
+        orders = self.request(url=url,method="post")
+        if wait:
+            self.wait_for_orders(project_id, orders, build=True, sleep=sleep)
+        return orders
 
     def get_base_scenario_list(self, model_types:list=[], terms:list=[], vintages:list=[], sort_by:str=""):
         url = f'{self._base_uri}/base-scenario/search'
@@ -471,11 +481,12 @@ class ScenarioStudioAPI(BaseAPI):
         return ret
 
     def set_user_permission(self, project_id:str, emails:list, role:int):
-        users = self.get_user_universe()
+        if len(self.user_universe) == 0:
+            self.user_universe = self.get_user_universe()
         url = f'{self._base_uri}/project/{project_id}/contributor/{role}'
         pl = []
         for email in emails:
-            sids = [x for x in users if email.lower() == x['email'].lower()]
+            sids = [x for x in self.user_universe if email.lower() == x['email'].lower()]
             if len(sids) > 0:
                 pl.append({'sid':sids[0]['sid'], 'firstName':sids[0]['firstName'], 'lastName':sids[0]['lastName'], 'email':sids[0]['email'], 'role':role})
         ret = self.request(url=url,method="put",payload=pl)
