@@ -264,6 +264,16 @@ MA_S2Api$set("public", "central_solve", function(project_id, scenario_id) {
   return(ret)
 })
 
+MA_S2Api$set("public", "add_factor_solve", function(project_id, scenario_id, variables) {
+  stopifnot(is.character(project_id),length(project_id) == 1)
+  stopifnot(is.character(scenario_id),length(scenario_id) == 1)
+  stopifnot(is.character(variables))
+  pl <- lapply(variables, toupper)
+  url <- paste0("/project/",project_id,"/scenario/",scenario_id,"/series/reendogenize")
+  ret <- self$request(method="post",url=url,payload=pl)
+  return(ret)
+})
+
 MA_S2Api$set("public", "get_base_scenario_info", function(scenario_id) {
   stopifnot(is.character(scenario_id),length(scenario_id) == 1)
   url <- paste0("/base-scenario/",scenario_id)
@@ -386,6 +396,11 @@ MA_S2Api$set("public", "wait_for_orders", function(project_id,
   stopifnot(is.list(orders))
   stopifnot(is.logical(build),length(build) == 1)
   stopifnot(is.numeric(sleep),length(sleep) == 1)
+  if (all(sapply(order,is.list))) {
+    orderlist <- orders
+  } else {
+    orderlist <- list(orders)
+  }
   wait_one <- function(o) {
     status <- self$get_order_status(project_id, o$orderId, build = build)
     orderDone <- status$finished
@@ -396,7 +411,7 @@ MA_S2Api$set("public", "wait_for_orders", function(project_id,
     }
     status
   }
-  ret <- lapply(orders, wait_one)
+  ret <- lapply(orderlist, wait_one)
   return(ret)
 })
 
