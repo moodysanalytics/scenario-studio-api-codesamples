@@ -396,7 +396,7 @@ MA_S2Api$set("public", "wait_for_orders", function(project_id,
   stopifnot(is.list(orders))
   stopifnot(is.logical(build),length(build) == 1)
   stopifnot(is.numeric(sleep),length(sleep) == 1)
-  if (all(sapply(order,is.list))) {
+  if (all(sapply(orders,is.list))) {
     orderlist <- orders
   } else {
     orderlist <- list(orders)
